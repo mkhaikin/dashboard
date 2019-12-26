@@ -1,5 +1,5 @@
 # dashboard
 express dashboard app with sql database
 
-    Yefim
-    Michael
+# Middleware
+This app will use the Express middleware for routing purposes.

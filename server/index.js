@@ -1,30 +1,28 @@
-# dashboard
-express dashboard app with sql database
-
-## Middleware
-This app will use the Express middleware for routing purposes.
-
-## Database
-The date will be indexed and stored in a SQL database
-
-### Instructions
-git clone https://github.com/YOUR-USERNAME/repoName 
-Create folders called public, server, views 
-npm init => to initialize folder
-install middleware 
-npm i express, express-handlebars, body-parser
-inside server/index.js include app dependecies
-
 // init express app dependencies
 const express = require('express');
 const app = express();
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-
+// recognize incoming req as JSON Object
+app.use(express.json());
+// Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+//body-Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
+// initial express routes
+//app.use('/', routes());
+// Set a static folder in the public directory
+app.use(express.static('public'));
+// silence the server request for a fac icon
+app.get('/favicon.ico', (req,res,next) => {
+    return res.sendStatus(204);
+});
+
+app.get('/', (req,res,next) => {
+    res.send('Memebers Page');
+});
 
 // Active on port #
 const PORT = process.env.PORT || 3000;

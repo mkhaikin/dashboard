@@ -10,7 +10,7 @@ git clone https://github.com/YOUR-USERNAME/repoName
 Create folders called public, server, views 
 npm init => to initialize folder
 install middleware 
-npm i express, express-handlebars, body-parser
+npm i express express-handlebars body-parser mysql
 inside server/index.js include app dependecies
 
 // init express app dependencies

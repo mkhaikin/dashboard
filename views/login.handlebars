@@ -1,10 +1,11 @@
 <h1 class="text-center mb-3">{{title}}</h1>
 
-<h5>Login using your username and passowrd</h5>
+{{!-- 
 <ul class="list-group">
-</ul>
+</ul> --}}
 
-<form action="/api/members" method="POST" class="mb-4">
+<form class="login-form" action="/api/members" method="POST" class="mb-4">
+<h1>Login using your username and passowrd</h1>
     <div class="form-group">
         <label for="name">User Name</label>
         <input type="text" name="name" class="form-control">
@@ -16,4 +17,4 @@
     <input type="submit" name="Add Member" class="btn btn-primary btn-block">
 </form> 
 
-<a href="/api/members" class="btn btn-light mt-4">Visit the Api</a>
+{{!-- <a href="/api/members" class="btn btn-light mt-4">Visit the Api</a> --}}

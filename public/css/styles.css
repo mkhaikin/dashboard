@@ -1,0 +1,36 @@
+h1 {
+    padding: 20px;
+}
+.login-form {
+    width: 300px;
+    margin: 0 auto;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+.login-form h1 {
+    text-align: center;
+    color: #4d4d4d;
+    font-size: 24px;
+    padding: 20px 0 20px 0;
+}
+
+form {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    width: 500px;
+    align-items: center;
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+form .form-group {
+    width: 100%;
+}
+
+form button {
+    width: 100px;
+}

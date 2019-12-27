@@ -7,6 +7,9 @@ This app will use the Express middleware for routing purposes.
 ## Database
 The date will be indexed and stored in a SQL database
 
+#### git book
+https://book.git-scm.com/book/en/v2
+
 ### Instructions
 git clone https://github.com/YOUR-USERNAME/repoName 
 Create folders called public, server, views 

@@ -4,6 +4,8 @@ const router = express.Router();
 // create routing directories from parent folder
 const adminRoute = require('./admin');
 const dashboardRoute = require('./dashboard');
+const loginRoute = require('./login');
+
 
 module.exports = () => {
     // create a root route handler
@@ -13,6 +15,7 @@ module.exports = () => {
 
     router.use('/admin', adminRoute());
     router.use('/dashboard', dashboardRoute());
+    router.use('/login', loginRoute());
     
     return router;
 };

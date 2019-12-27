@@ -3,8 +3,8 @@ const router = express.Router();
 
 module.exports = () => {
     router.get('/', (req, res, next) => {
-        return res.render('admin', {
-            title: 'Welcome to Admin Page'
+        return res.render('login', {
+            title: 'Welcome to login Page'
         })
     });
 

@@ -1,5 +1,10 @@
+.login{
+    background-image: url("../img/efcd5b8e.png");
+    background-repeat: repeat;
+}
 h1 {
     padding: 20px;
+    color: dimgrey;
 }
 .login-form {
     width: 300px;

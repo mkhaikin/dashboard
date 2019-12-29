@@ -1,7 +1,7 @@
 // establish Mysql Connection  
 var mysql = require('mysql');  
   
-function MySQLConnect() {  
+function conn() {  
   this.pool = null;  
     
   // Init MySql Connection Pool  
@@ -17,10 +17,10 @@ function MySQLConnect() {
 
    // acquire connection and execute query on callbacks  
    this.acquire = function(callback) {  
-    this.pool.getConnection(function(err, connection) {  
-      callback(err, connection);  
+    this.pool.getConnection(function(err, conn) {  
+      callback(err, conn);  
     });  
   };  
 }  
   
-module.exports = new MySQLConnect();  
+module.exports = new conn();  

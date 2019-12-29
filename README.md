@@ -6,4 +6,8 @@ https://book.git-scm.com/book/en/v2
 or basic guide >>> https://rogerdudler.github.io/git-guide/
 
 ### Instructions
-source control > pull from upstream
+To download code >>>
+1. source control > pull from upstream
+2. To Upload code. Commit + msg >> Push to origin
+3. github.com pull request
+ 

@@ -6,9 +6,6 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-
-
-
 // initial express routes
 app.use('/', routes());
 // Handlebars

@@ -11,8 +11,8 @@ app.use(express.json());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 //body-Parser
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
 // initial express routes
 app.use('/', routes());
 // Set a static folder in the public directory

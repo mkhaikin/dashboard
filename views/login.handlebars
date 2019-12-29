@@ -5,7 +5,7 @@
 <ul class="list-group">
 </ul> --}}
 
-<form class="login-form" action="/api/members" method="POST" class="mb-4">
+<form class="login-form" action="/dashboard" method="POST" class="mb-4">
 <h1>Login using your username and passowrd</h1>
     <div class="form-group">
         <label for="name">User Name</label>
@@ -16,7 +16,8 @@
         <input type="password" name="password" class="form-control">
     </div>
     <input type="submit" name="loggedin" class="btn btn-primary btn-block">
+    <a href="/dashboard" class="btn btn-light mt-4">Visit the Dashboard</a>
 </form> 
 
-{{!-- <a href="/api/members" class="btn btn-light mt-4">Visit the Api</a> --}}
+
 </div>

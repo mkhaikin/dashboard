@@ -3,8 +3,9 @@ const router = express.Router();
 
 module.exports = () => {
     router.get('/', (req, res, next) => {
-        return res.send('dashboard Page');
+        return res.render('dashboard', {
+            title: 'Welcome to dashboard'
+        })
     });
-
     return router;
-}
+};

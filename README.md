@@ -6,27 +6,8 @@ https://book.git-scm.com/book/en/v2
 or basic guide >>> https://rogerdudler.github.io/git-guide/
 
 ### Instructions
-git clone https://github.com/YOUR-USERNAME/repoName 
-Create folders called public, server, views 
-npm init => to initialize folder
-install middleware 
-npm i express express-handlebars body-parser mysql
-inside server/index.js include app dependecies
-
-// init express app dependencies
-const express = require('express');
-const app = express();
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
-
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
-
-// Active on port #
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
-//Export module to be used by others
-module.export = app;
+To download code >>>
+1. source control > pull from upstream
+2. To Upload code. Commit + msg >> Push to origin
+3. github.com pull request
+ 

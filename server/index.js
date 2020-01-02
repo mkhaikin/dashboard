@@ -26,12 +26,13 @@ app.use(express.json());
 app.use(express.static('public'));
 // silence the server request for a fac icon
 app.get('/favicon.ico', (req,res,next) => {
+	console.log('favicon');
     return res.sendStatus(204);
 });
-// Basic Route without routing middleware
-// app.get('/', (req,res,next) => {
-//     res.send('Memebers Page');
-// });
+app.get('/form', function(request, response) {
+	response.sendFile(path.join(__dirname + '/public/index.html'));
+});
+
 
 // Active on port #
 const PORT = process.env.PORT || 3000;

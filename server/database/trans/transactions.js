@@ -1,15 +1,24 @@
 //methods for fetching mysql data  
-var connection = require('../connection/MySQLConnect');  
+const conn = require('/conn'); 
 
 function Transaction() { 
+
+    // get user by id
+    this.getUserById = () => {
+        conn.init();
+        conn.acquire((req,res) => {
+
+        });
+    }
+
+
     // get all notices data  
     this.getAllNoticesByCondoCode  = function (code, res, callback) {
         var data;
-        // initialize database connection  
-        connection.init();  
+        conn.init();  
         
         // get condo code as parameter to passing into query and return filter data  
-        connection.acquire(function (err, con) {  
+        conn.acquire(function (err, con) {  
 
             var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, null as picid, p.name as icon ' +
@@ -20,7 +29,7 @@ function Transaction() {
 
             //if (err) throw err; // not connected!
             con.query(query, code, function (err, result) {  
-                if (typeof callback === 'function') {
+                if (typeof === 'function') {
                     if(err) 
                         callback(err, null);
                     else

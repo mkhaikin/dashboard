@@ -1,9 +1,9 @@
 // init express app dependencies
 const express = require('express');
+const exphbs = require('express-handlebars');
 const app = express();
 const session = require('express-session');
 const routes = require('./routes');
-const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 
 app.use(session({
@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 // Set a static folder in the public directory
 app.use(express.static('public'));
+
 // silence the server request for a fac icon
 app.get('/favicon.ico', (req,res,next) => {
     return res.sendStatus(204);

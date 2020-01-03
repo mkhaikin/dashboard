@@ -1,4 +1,5 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const router = express.Router();
 const conn = require('../../database/conn/conn');
 
@@ -11,16 +12,14 @@ module.exports = () => {
     });
 
     router.post('/', (req, res, next) => {
-        var username = 'Demo Condo';
-        var password = 'condo123';
-        console.log('username is '+ username);
-        res.redirect('/dashboard');
+        var username = req.body.username;
+        var password = req.body.password;
         if (username && password) {
-            conn.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], (error, results, fields) => {
+            conn.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
                 if (results.length > 0) {
                     req.session.loggedin = true;
                     req.session.username = username;
-                    res.redirect('/dashboard');
+                    res.redirect('/home');
                 } else {
                     res.send('Incorrect Username and/or Password!');
                 }			

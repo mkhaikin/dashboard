@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const conn = require('../../database/conn/conn');
 
-
 module.exports = () => {
     router.get('/', (req, res, next) => {
         return res.render('login', {

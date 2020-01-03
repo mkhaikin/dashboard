@@ -1,7 +1,14 @@
+const mysql = require('mysql'); 
 const express = require('express');
-const exphbs = require('express-handlebars');
 const router = express.Router();
-const conn = require('../../database/conn/conn');
+// const conn = require('../../database/conn/conn');
+
+var conn = mysql.createConnection({
+    host     : 'localhost',  
+    user     : 'root',  
+    password : 'TCSuEvEgC42WsJBY',  
+    database: 'nb_dashboard' 
+});
 
 module.exports = () => {
     router.get('/', (req, res, next) => {
@@ -19,7 +26,7 @@ module.exports = () => {
                 if (results.length > 0) {
                     req.session.loggedin = true;
                     req.session.username = username;
-                    res.redirect('/home');
+                    res.redirect('/dashboard');
                 } else {
                     res.send('Incorrect Username and/or Password!');
                 }			

@@ -5,14 +5,16 @@ const app = express();
 const session = require('express-session');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
-
+const { body,validationResult, sanitizeBody } = require('express-validator');
+    body('name').isLength({ min: 1 }).trim().withMessage('Name empty.')
+	  .isAlpha().withMessage('Name must be alphabet letters.'),
+	  sanitizeBody('name').trim().escape();   
 app.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true
 }));
 
-app.use('/', routes());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -21,6 +23,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 // Set a static folder in the public directory
 app.use(express.static('public'));
+app.use('/', routes());
 
 // silence the server request for a fac icon
 app.get('/favicon.ico', (req,res,next) => {

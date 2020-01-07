@@ -1,5 +1,5 @@
 //methods for fetching mysql data  
-const conn = require('/conn'); 
+const conn = require('../conn/MySQLConnect'); 
 
 function Transaction() { 
 
@@ -11,6 +11,22 @@ function Transaction() {
         });
     }
 
+    this.authorization = function(username, password, res, callback){
+        conn.init();
+        conn.acquire(function (err, con) { 
+            var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
+             //if (err) throw err; // not connected!
+             con.query(query, [username, password], function (err, result) {  
+                if (typeof callback === 'function') {
+                    if(err) 
+                        callback(err, null);
+                    else
+                        callback(null, result);
+                }                      
+                con.release();
+            });
+        }); 
+    };
 
     // get all notices data  
     this.getAllNoticesByCondoCode  = function (code, res, callback) {
@@ -29,7 +45,7 @@ function Transaction() {
 
             //if (err) throw err; // not connected!
             con.query(query, code, function (err, result) {  
-                if (typeof === 'function') {
+                if (typeof callback === 'function') {
                     if(err) 
                         callback(err, null);
                     else

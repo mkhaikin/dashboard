@@ -10,7 +10,7 @@ function MySQLConnect() {
        connectionLimit: 10,  
        host     : 'localhost',  
        user     : 'root',  
-       password :  '',                       //'TCSuEvEgC42WsJBY',  
+       password :  'TCSuEvEgC42WsJBY',                       //'TCSuEvEgC42WsJBY',  
        database: 'nb_dashboard'  
      });  
    }; 

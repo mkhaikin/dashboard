@@ -115,8 +115,7 @@ function Transaction() {
                         if(err) callback(err, null);
                         else
                             callback(null, result);
-                      }  
-                      
+                      }
                     con.release();
                 });  
 

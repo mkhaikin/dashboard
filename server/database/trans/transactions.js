@@ -1,5 +1,6 @@
 //methods for fetching mysql data  
-const conn = require('../conn/MySQLConnect'); 
+//const conn = require('../conn/MySQLConnect'); 
+const pool = require('../conn/Pool'); 
 
 function Transaction() { 
 
@@ -10,6 +11,12 @@ function Transaction() {
 
         });
     }
+
+    this.getAccount = async function(username, password){
+        var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
+        return await pool.query(query, [username, password]);
+         
+    };
 
     this.authorization = function(username, password, res, callback){
         conn.init();

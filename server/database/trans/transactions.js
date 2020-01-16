@@ -4,18 +4,26 @@ const pool = require('../conn/Pool');
 
 function Transaction() { 
 
-    // get user by id
-    this.getUserById = () => {
-        conn.init();
-        conn.acquire((req,res) => {
-
-        });
-    }
-
     this.getAccount = async function(username, password){
         var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
         return await pool.query(query, [username, password]);
          
+    };
+
+    // get all notices
+    this.getAllNoticesByCondo  = async function(code){
+        var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, null as picid, p.name as icon ' +
+                       ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
+                       ' JOIN pictures as p ON n.icon = p.id '  +
+                       ' WHERE c.code = ? ORDER BY n.id DESC ); ';
+        return await pool.query(query, code);                       
+    };
+
+    // get all notice icons
+    this.getAllNoticesIcons  = async function(){
+        var query = '(SELECT p.id as picid, p.name as picture FROM pictures as p);';
+        return await pool.query(query);                       
     };
 
     this.authorization = function(username, password, res, callback){

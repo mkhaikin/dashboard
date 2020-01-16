@@ -1,7 +1,8 @@
-const pool = require('../database/conn/Pool'); 
+//const pool = require('../database/conn/Pool'); 
 //import { Account } from 'model/account';
 const ACC = require('./account');
 //import { Result } from 'model/result';
+const NS = require('./noticeservice');
 
 class DataAccessLogic {
     constructor() {
@@ -12,6 +13,12 @@ class DataAccessLogic {
             var res = await ACC.validateAccount(username, password);
         // data validation
             return res;
+    };
+
+    async getallNotices(CondoCode){
+        var res = await NS.getNoticesByCondoCode(CondoCode);
+        // data validation
+        return res;
     };
     
 

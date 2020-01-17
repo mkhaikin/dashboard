@@ -39,6 +39,7 @@ class NoticeService {
             return { data: 0, message: 'Status (501). Not able to query the database' };  
         }
     }
+
     getNoticesByCondoName(){
         
     }
@@ -48,6 +49,25 @@ class NoticeService {
     getNoticesByActiveStatus(){
         
     }
+
+    async getAllIcons(){
+        try{
+            const results = await transactions.getAllNoticesIcons();
+            console.log(results);
+            if(JSON.stringify(results).length > 2) { // '[]' means empty result, length == 2
+                //console.log('Success');
+                return { data: results, message: "Success" };
+            } else { 
+                //console.log('No notices found!');
+                return { data: 0, message: 'No notices found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
+    }
+
+
     //INSERT
     insertNewNotices(){
         

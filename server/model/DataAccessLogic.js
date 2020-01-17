@@ -21,7 +21,11 @@ class DataAccessLogic {
         return res;
     };
     
-
+    async getIconsList(){
+        var res = await NS.getAllIcons();
+        // data validation
+        return res;
+    };
 
 }
 

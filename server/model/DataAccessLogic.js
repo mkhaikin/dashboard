@@ -20,6 +20,12 @@ class DataAccessLogic {
         // data validation
         return res;
     };
+
+    async getallNoticesByCondoName(CondoName){
+        var res = await NS.getNoticesByCondoName(CondoName);
+        // data validation
+        return res;
+    };
     
     async getIconsList(){
         var res = await NS.getAllIcons();

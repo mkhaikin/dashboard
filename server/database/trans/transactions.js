@@ -13,11 +13,20 @@ function Transaction() {
     // get all notices
     this.getAllNoticesByCondo  = async function(code){
         var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
-                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, null as picid, p.name as icon ' +
+                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
                        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
                        ' JOIN pictures as p ON n.icon = p.id '  +
                        ' WHERE c.code = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, code);                       
+    };
+
+    this.getAllNoticesByCondoName  = async function(name){
+        var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
+                       ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
+                       ' JOIN pictures as p ON n.icon = p.id '  +
+                       ' WHERE c.name = ? ORDER BY n.id DESC ); ';
+        return await pool.query(query, name);                       
     };
 
     // get all notice icons
@@ -26,6 +35,41 @@ function Transaction() {
         return await pool.query(query);                       
     };
 
+
+    this.insertNotice = async function(condo, text, start, end, imgId){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {
+                    
+                    var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
+                                ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
+                    var params = [condo, text, start, end, imgId];
+                    var insRes = await pool.query(query, params); 
+                    //console.log( insRes.insertId);
+                    res = insRes.insertId;
+                } );
+            } catch ( err ) {
+              console.log(err);
+               
+            }
+        return res;
+
+    };
+
+    async function withTransaction( db, callback ) {
+        try {
+          await db.beginTransaction();
+          await callback();
+          await db.commit();
+        } catch ( err ) {
+          await db.rollback();
+          throw err;
+        } finally {
+          await db.release();
+        }
+      }
+////////////////////////////
     this.authorization = function(username, password, res, callback){
         conn.init();
         conn.acquire(function (err, con) { 
@@ -136,7 +180,8 @@ function Transaction() {
 
         });  
         //return data;
-    };  
+    }; 
+
     ////////////////
 
     //insert new notice

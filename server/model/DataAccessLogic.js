@@ -20,8 +20,24 @@ class DataAccessLogic {
         // data validation
         return res;
     };
-    
 
+    async getallNoticesByCondoName(CondoName){
+        var res = await NS.getNoticesByCondoName(CondoName);
+        // data validation
+        return res;
+    };
+    
+    async getIconsList(){
+        var res = await NS.getAllIcons();
+        // data validation
+        return res;
+    };
+
+    async insertNotice(condo, text, start, end, imgId){
+        var res = await NS.insertNewNotice( condo, text, start, end, imgId);
+        // data validation
+        return res;
+    };
 
 }
 

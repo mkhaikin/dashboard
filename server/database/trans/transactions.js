@@ -68,7 +68,35 @@ function Transaction() {
         } finally {
           await db.release();
         }
-      }
+    };
+
+      //update notice
+    this.updateNotice = async function( id, text, start, end, icon){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {
+                    
+                var query = 'UPDATE new_noticetable '  +
+                'SET text= ?, ' +
+                'start= ?, ' +
+                'end= ?, ' +
+                'icon= ?, ' +
+                'modified= NOW() ' +
+                'WHERE id= ?;';
+                var params = [text, start, end, icon, id];
+                var updateRes = await pool.query(query, params); 
+                    //console.log(  updateRes.affectedRows);
+                    res = updateRes.affectedRows;
+                } );
+            } catch ( err ) {
+              console.log(err);               
+            }
+        return res;
+    }; 
+
+
+
 ////////////////////////////
     this.authorization = function(username, password, res, callback){
         conn.init();
@@ -225,7 +253,7 @@ function Transaction() {
     };  
 
     //update notice
-    this.updateNotice = function( id, text, start, end, icon, res, callback){
+    this.updateNoticeOLDVERSION = function( id, text, start, end, icon, res, callback){
         // initialize database connection  
         connection.init();  
         // get condo code and id as parameter to passing into query and return filter data  

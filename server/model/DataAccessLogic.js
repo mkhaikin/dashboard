@@ -39,6 +39,11 @@ class DataAccessLogic {
         return res;
     };
 
+    async updateNotice(idNote, text, start, end, idIcon){
+        var res = await NS.updateNoticeById(idNote, text, start, end, idIcon);
+        return res;
+    };
+
 }
 
 module.exports = new DataAccessLogic(); 

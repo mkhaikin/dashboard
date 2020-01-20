@@ -27,7 +27,20 @@ class NoticeService {
 
     }
     //UPDATE
-    updateNoticeById(){
+    async updateNoticeById(idNote, text, start, end, idIcon){
+        try{
+            const result = await transactions.updateNotice(idNote, text, start, end, idIcon);
+            if(result > 0) {
+            //console.log('Success');
+                return { data: result, message: "Updated" };
+            } else { 
+                //console.log('No id found!');
+                return { data: 0, message: 'No one record to update found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
 
     }
     //DELETE

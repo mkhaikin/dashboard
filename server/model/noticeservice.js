@@ -27,12 +27,37 @@ class NoticeService {
 
     }
     //UPDATE
-    updateNoticeById(){
+    async updateNoticeById(idNote, text, start, end, idIcon){
+        try{
+            const result = await transactions.updateNotice(idNote, text, start, end, idIcon);
+            if(result > 0) {
+            //console.log('Success');
+                return { data: result, message: "Updated" };
+            } else { 
+                //console.log('No id found!');
+                return { data: 0, message: 'No one record to update found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
 
     }
     //DELETE
-    deleteNoticeById(){
-
+    async deleteNoticeById(idNote){
+        try{
+            const result = await transactions.deleteNoticeByID(idNote);
+            if(result > 0) {
+            //console.log('Success');
+                return { data: result, message: "Deleted" };
+            } else { 
+                //console.log('No id found!');
+                return { data: 0, message: 'No one record to delete found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
     }
     //////////////////////////////////////////////////
     //group notices operation
@@ -58,10 +83,27 @@ class NoticeService {
     async getNoticesByCondoName(CondoName){
         try{
             const results = await transactions.getAllNoticesByCondoName(CondoName);
-            console.log(results);
+            //console.log(results);
             if(JSON.stringify(results).length > 2) { // '[]' means empty result, length == 2
                 //console.log('Success');
                 return { data: results, message: "Success" };
+            } else { 
+                //console.log('No notices found!');
+                return { data: 0, message: 'No notices found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
+    }
+
+    async getNoticeByID(id){
+        try{
+            const result = await transactions.getNoticeByID(id);
+            //console.log(result);
+            if(JSON.stringify(result).length > 2) { // '[]' means empty result, length == 2
+                //console.log('Success');
+                return { data: result, message: "Success" };
             } else { 
                 //console.log('No notices found!');
                 return { data: 0, message: 'No notices found!' };                 

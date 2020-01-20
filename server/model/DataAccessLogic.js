@@ -26,6 +26,12 @@ class DataAccessLogic {
         // data validation
         return res;
     };
+
+    async getNoticeByID(id){
+        var res = await NS.getNoticeByID(id);
+        // data validation
+        return res;
+    };
     
     async getIconsList(){
         var res = await NS.getAllIcons();
@@ -36,6 +42,16 @@ class DataAccessLogic {
     async insertNotice(condo, text, start, end, imgId){
         var res = await NS.insertNewNotice( condo, text, start, end, imgId);
         // data validation
+        return res;
+    };
+
+    async updateNotice(idNote, text, start, end, idIcon){
+        var res = await NS.updateNoticeById(idNote, text, start, end, idIcon);
+        return res;
+    };
+
+    async deleteNoticeById(idNote){
+        var res = await NS.deleteNoticeById(idNote);
         return res;
     };
 

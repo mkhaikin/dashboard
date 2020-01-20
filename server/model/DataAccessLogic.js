@@ -33,6 +33,12 @@ class DataAccessLogic {
         return res;
     };
 
+    async insertNotice(condo, text, start, end, imgId){
+        var res = await NS.insertNewNotice( condo, text, start, end, imgId);
+        // data validation
+        return res;
+    };
+
 }
 
 module.exports = new DataAccessLogic(); 

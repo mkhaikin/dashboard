@@ -29,5 +29,6 @@ const pool = mysql.createPool({
   
   // Promisify for Node.js async/await.
  pool.query = util.promisify(pool.query) 
+ pool.getConnection = util.promisify(pool.getConnection);
 
 module.exports = pool;  

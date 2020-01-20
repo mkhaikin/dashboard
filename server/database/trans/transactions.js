@@ -35,6 +35,41 @@ function Transaction() {
         return await pool.query(query);                       
     };
 
+
+    this.insertNotice = async function(condo, text, start, end, imgId){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {
+                    
+                    var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
+                                ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
+                    var params = [condo, text, start, end, imgId];
+                    var insRes = await pool.query(query, params); 
+                    //console.log( insRes.insertId);
+                    res = insRes.insertId;
+                } );
+            } catch ( err ) {
+              console.log(err);
+               
+            }
+        return res;
+
+    };
+
+    async function withTransaction( db, callback ) {
+        try {
+          await db.beginTransaction();
+          await callback();
+          await db.commit();
+        } catch ( err ) {
+          await db.rollback();
+          throw err;
+        } finally {
+          await db.release();
+        }
+      }
+////////////////////////////
     this.authorization = function(username, password, res, callback){
         conn.init();
         conn.acquire(function (err, con) { 
@@ -145,7 +180,8 @@ function Transaction() {
 
         });  
         //return data;
-    };  
+    }; 
+
     ////////////////
 
     //insert new notice

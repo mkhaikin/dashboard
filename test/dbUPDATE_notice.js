@@ -14,6 +14,7 @@ const end = '2020-01-07 17:00:00';
 const imgId = '11';
 
 async function testUpdatetNotice(id, text, start, end, imgId) {
+    
     if (id && text && start && end && imgId) {
         try{
             var result = await DAL.updateNotice(id, text, start, end, imgId);

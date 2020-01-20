@@ -29,6 +29,15 @@ function Transaction() {
         return await pool.query(query, name);                       
     };
 
+    this.getNoticeByID  = async function(id){
+        var query = '(SELECT n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
+                       ' FROM new_noticetable as n ' +
+                       ' JOIN pictures as p ON n.icon = p.id '  +
+                       ' WHERE n.id = ?); ';
+        return await pool.query(query, id);                       
+    };
+
     // get all notice icons
     this.getAllNoticesIcons  = async function(){
         var query = '(SELECT p.id as picid, p.name as picture FROM pictures as p);';
@@ -95,7 +104,21 @@ function Transaction() {
         return res;
     }; 
 
-
+    this.deleteNoticeByID = async function( id){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {                    
+                var query = 'DELETE FROM new_noticetable WHERE id = ?;';                
+                var updateRes = await pool.query(query, id); 
+                    //console.log(  updateRes.affectedRows);
+                    res = updateRes.affectedRows;
+                } );
+            } catch ( err ) {
+              console.log(err);               
+            }
+        return res;
+    }; 
 
 ////////////////////////////
     this.authorization = function(username, password, res, callback){
@@ -143,7 +166,7 @@ function Transaction() {
         });  
     }; 
     
-    this.getNoticeByID  = function (id, res, callback) {
+    this.getNoticeByIDOLD  = function (id, res, callback) {
         var data;
         // initialize database connection  
         connection.init();  
@@ -281,7 +304,7 @@ function Transaction() {
         });
     }; 
 
-    this.deleteNotice = function( id, callback){
+    this.deleteNoticeOLD = function( id, callback){
         // initialize database connection  
         connection.init();  
         // get condo code and id as parameter to passing into query and return filter data  

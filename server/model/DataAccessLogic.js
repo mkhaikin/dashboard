@@ -45,6 +45,12 @@ class DataAccessLogic {
         return res;
     };
 
+    async insertNotices(records){
+        var res = await NS.insertNotices( records);
+        // data validation
+        return res;
+    };
+
     async updateNotice(idNote, text, start, end, idIcon){
         var res = await NS.updateNoticeById(idNote, text, start, end, idIcon);
         return res;
@@ -55,6 +61,10 @@ class DataAccessLogic {
         return res;
     };
 
+    async deleteNoticesById(ids){
+        var res = await NS.deleteNoticeById(ids);
+        return res;
+    };
 }
 
 module.exports = new DataAccessLogic(); 

@@ -66,6 +66,42 @@ function Transaction() {
 
     };
 
+    this.insertNotices = async function(records){
+        const db = await pool.getConnection();
+        var res = 0; 
+            try {
+                await withTransaction( db, async () => {
+                    var query = 'SELECT code FROM condos WHERE name = ?';
+                    result =  await pool.query(query, records[0][0]);
+                    var code = 0;
+                    Object.keys(result).forEach(function(key) {
+                        var row = result[key];
+                        //console.log(row.code);
+                        code = row.code;
+                      });
+
+                    records.forEach( function  (value) {
+                        value[0] = code;
+                        //console.log(value);
+                    });  
+                    
+                    var query ='INSERT INTO new_noticetable (condo, text, start, end, icon)' + 
+                                ' Values  ?;';
+                    
+                    var insRes = await pool.query(query, [records]); 
+                    //console.log( insRes.affectedRows);
+                    res = insRes.affectedRows;
+                   
+                   
+                } );
+            } catch ( err ) {
+              console.log(err);
+               
+            }
+        return res;
+
+    };
+
     async function withTransaction( db, callback ) {
         try {
           await db.beginTransaction();
@@ -119,6 +155,24 @@ function Transaction() {
             }
         return res;
     }; 
+
+    this.deleteNoticesByID = async function( ids){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {                    
+                var query = 'DELETE FROM new_noticetable WHERE IN (' + ids.join() + ')';               
+                var updateRes = await pool.query(query, id); 
+                    //console.log(  updateRes.affectedRows);
+                    res = updateRes.affectedRows;
+                } );
+            } catch ( err ) {
+              console.log(err);               
+            }
+        return res;
+    }; 
+
+    
 
 ////////////////////////////
     this.authorization = function(username, password, res, callback){

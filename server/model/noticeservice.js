@@ -134,6 +134,23 @@ class NoticeService {
         
     }
 
+    async getNoticesInFull(CondoName){ //active status and current time
+        try{
+            const result = await transactions.getNoticesInFull(CondoName);
+            //console.log(result);
+            if(JSON.stringify(result).length > 2) { // '[]' means empty result, length == 2
+                //console.log('Success');
+                return { data: result, message: "Success" };
+            } else { 
+                //console.log('No notices found!');
+                return { data: 0, message: 'No notices found!' };                 
+            }	
+        }catch(err){
+            console.log(err);
+            return { data: 0, message: 'Status (501). Not able to query the database' };  
+        }
+    }
+
     async getAllIcons(){
         try{
             const results = await transactions.getAllNoticesIcons();

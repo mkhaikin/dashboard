@@ -32,6 +32,12 @@ class DataAccessLogic {
         // data validation
         return res;
     };
+
+    async getNoticeInFull(condoname){
+        var res = await NS.getNoticesInFull(condoname);
+        // data validation
+        return res;
+    };
     
     async getIconsList(){
         var res = await NS.getAllIcons();

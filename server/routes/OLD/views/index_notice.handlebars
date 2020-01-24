@@ -1,0 +1,24 @@
+<div class="container content">
+   <h1>Condos App</h1>
+   <h3>Name: {{data.0.name}}</h3>
+   <input type="hidden" name="condoName" value="{{data.0.name}}">
+
+    {{> addNotice }}
+    
+    <div class="content-notice">
+        <select class="noticetypeselect" id="noticetype">
+            <option name="type1" value="1" selected>All</option>
+            <option name="type2" value="2">Active</option>
+            <option name="type3" value="3">Future</option>
+            <option name="type4" value="4">Both</option>
+        </select>
+        <button class="btn btn-success" type="button" id="notice_show" name="ShowNotices" >Show</button>
+        {{#each data}}
+         {{#if this.name}}
+            {{> displayNotice }}
+         {{/if}}
+        {{/each}}
+        
+    </div>
+
+</div>

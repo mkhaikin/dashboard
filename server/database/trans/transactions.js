@@ -44,6 +44,16 @@ function Transaction() {
         return await pool.query(query);                       
     };
 
+    this.getNoticesInFull  = async function(condoname){// get all current notice with active status
+        var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
+        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
+        ' JOIN pictures as p ON n.icon = p.id '  +
+        'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
+
+        return await pool.query(query, condoname);                       
+    };
+
 
     this.insertNotice = async function(condo, text, start, end, imgId){
         const db = await pool.getConnection();
@@ -57,6 +67,42 @@ function Transaction() {
                     var insRes = await pool.query(query, params); 
                     //console.log( insRes.insertId);
                     res = insRes.insertId;
+                } );
+            } catch ( err ) {
+              console.log(err);
+               
+            }
+        return res;
+
+    };
+
+    this.insertNotices = async function(records){
+        const db = await pool.getConnection();
+        var res = 0; 
+            try {
+                await withTransaction( db, async () => {
+                    var query = 'SELECT code FROM condos WHERE name = ?';
+                    result =  await pool.query(query, records[0][0]);
+                    var code = 0;
+                    Object.keys(result).forEach(function(key) {
+                        var row = result[key];
+                        //console.log(row.code);
+                        code = row.code;
+                      });
+
+                    records.forEach( function  (value) {
+                        value[0] = code;
+                        //console.log(value);
+                    });  
+                    
+                    var query ='INSERT INTO new_noticetable (condo, text, start, end, icon)' + 
+                                ' Values  ?;';
+                    
+                    var insRes = await pool.query(query, [records]); 
+                    //console.log( insRes.affectedRows);
+                    res = insRes.affectedRows;
+                   
+                   
                 } );
             } catch ( err ) {
               console.log(err);
@@ -119,6 +165,24 @@ function Transaction() {
             }
         return res;
     }; 
+
+    this.deleteNoticesByID = async function( ids){
+        const db = await pool.getConnection();
+        let res = 0;
+            try {
+                await withTransaction( db, async () => {                    
+                var query = 'DELETE FROM new_noticetable WHERE IN (' + ids.join() + ')';               
+                var updateRes = await pool.query(query, id); 
+                    //console.log(  updateRes.affectedRows);
+                    res = updateRes.affectedRows;
+                } );
+            } catch ( err ) {
+              console.log(err);               
+            }
+        return res;
+    }; 
+
+    
 
 ////////////////////////////
     this.authorization = function(username, password, res, callback){

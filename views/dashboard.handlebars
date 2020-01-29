@@ -17,19 +17,24 @@
                 <li>
                     <a href="#">Contact</a>
                 </li>
-                <li><span class="loggedin">{{msg}}</span> </li>
+                <li>
+                    <span class="loggedin">{{msg}}</span>
+                </li>
             </ul>
         </nav>
     </div>
 </header>
 
-<div class="">  
+<div class="main">  
 <h1 class="text-center mb-3">{{title}}</h1>
-   
-
+{{#if loggedin }}
+    {{> noticeboard }}
+{{else}}
+    {{> login }}
+{{/if}}
 {{!-- 
 <ul class="list-group">
 </ul> --}}
-<a href="/login" class="btn btn-light mt-4">please login</a>
+
 
 </div>

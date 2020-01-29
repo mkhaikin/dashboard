@@ -1,10 +1,12 @@
 // init express app dependencies
 const express = require('express');
 const exphbs = require('express-handlebars');
-const app = express();
 const session = require('express-session');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
+const PORT = process.env.PORT || 3000;
+const app = express();
+
 const { body,validationResult, sanitizeBody } = require('express-validator');
     body('name').isLength({ min: 1 }).trim().withMessage('Name empty.')
 	  .isAlpha().withMessage('Name must be alphabet letters.'),
@@ -30,13 +32,12 @@ app.get('/favicon.ico', (req,res,next) => {
     return res.sendStatus(204);
 });
 //Static page for FORM
-app.get('/form', function(request, response) {
-	response.sendFile(path.join(__dirname + '/public/index.html'));
-});
+// app.get('/form', function(request, response) {
+// 	response.sendFile(path.join(__dirname + '/public/index.html'));
+// });
 
 
 // Active on port #
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
 
 //Export module to be used by others

@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 // create routing directories from parent folder
-const adminRoute = require('./admin');
-const dashboardRoute = require('./dashboard');
 const loginRoute = require('./login');
+const logoutRoute = require('./logout');
+const dashboardRoute = require('./dashboard');
+
 
 
 module.exports = () => {
@@ -12,10 +13,10 @@ module.exports = () => {
     router.get('/', (req, res, next) => {
         return res.send('Index Page');
     });
-
-    router.use('/admin', adminRoute());
-    router.use('/dashboard', dashboardRoute());
-    router.use('/login', loginRoute());
     
+    router.use('/login', loginRoute());
+    router.use('/logout', logoutRoute());
+    router.use('/dashboard', dashboardRoute());
+        
     return router;
 };

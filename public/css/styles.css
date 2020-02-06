@@ -148,7 +148,6 @@ form {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 20px;
     width: 500px;
     align-items: center;
     margin: 0 auto;
@@ -158,10 +157,39 @@ form .form-group {
     width: 100%;
 }
 
-form input.form-control {
+form .form-control {
     margin-bottom: 5px;
 }
 
 form button {
     width: 100px;
 }
+/*  Notices   */
+.notices {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-notices {
+    width: 100%;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 0;
+}
+
+.content-notice_list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    padding: 10px;
+    height: 100%;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.pic img {
+    width: 35px;
+    height: 35px;
+    border: solid 1px #000;
+  }

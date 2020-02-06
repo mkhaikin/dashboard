@@ -5,36 +5,24 @@
         </h1>
         <nav class="main-nav">
             <ul class="main-nav-list">
-                <li>
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href="#">About us</a>
-                </li>
-                <li>
-                    <a href="#">Our clients</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-                <li>
-                    <span class="loggedin">{{msg}}</span>
-                </li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Our clients</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><span class="loggedin">{{msg}}</span></li>
             </ul>
         </nav>
     </div>
 </header>
 
 <div class="main">  
-<h1 class="text-center mb-3">{{title}}</h1>
-{{#if loggedin }}
-    {{> noticeboard }}
-{{else}}
-    {{> login }}
-{{/if}}
-{{!-- 
-<ul class="list-group">
-</ul> --}}
-
-
+    <h1 class="text-center mb-3">{{title}}</h1>
+    <div class="dashboard">
+        <div class="dashboard-from">
+            {{> noticeForm }}
+        </div>
+        <div class="notices">
+            {{> notices}}
+        </div>
+    </div>
 </div>

@@ -8,8 +8,8 @@ module.exports = () => {
 
 	if (req.session.loggedin) {
         const userName = req.session.username
-        ///////////////////////////////////
-        var result;
+        
+        var result = '';
             try{
                 result = await DAL.getallNoticesByCondoName(userName);
     
@@ -23,16 +23,10 @@ module.exports = () => {
             }catch(e){
                 console.log(e + 'Not able to query the database');
             }
-
-
-        /////////////////////////////////////////
 		return res.render('dashboard', {
-            loggedin: true,
-            //title: 'Welcome to dashboard',
-            title:JSON.stringify(result),
+            title: 'Welcome to dashboard',
             msg:'Welcome back, ' + userName + '!' ,
-        //    result: result
-        
+            data: result.data
             });
 	} else {
 		return res.redirect('/login');  

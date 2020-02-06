@@ -11,3 +11,8 @@ To download code >>>
 2. To Upload code. Commit + msg >> Push to origin
 3. github.com pull request
  
+Next steps
+1) form partial
+1.a) hidden id value
+
+2 notice partial

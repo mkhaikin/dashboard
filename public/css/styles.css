@@ -180,10 +180,32 @@ form button {
     flex-direction: column;
 }
 
-.notices p {
+/* .notices p {
+    display: flex;
+    justify-content: space-between;
     padding-right:5px;
     margin:0;
-}
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+} */
+
+.notices p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    padding: 0px;
+    height: 25px;
+    border-radius: 4px;
+    margin:3px 0 0 5px;
+    width: 50ch;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
 .content-notices {
     width: 100%;
     margin: 0 auto;
@@ -217,4 +239,28 @@ form button {
     width: 30%;
     padding: 20px;
     font-size: 20px;
+  }
+
+  .noticestart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    padding: 5px;
+    height: 70px;
+    width: 150px;
+    border-radius: 4px;
+    margin-top: 20px;
+  }
+
+  .noticeend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    padding: 5px;
+    height: 70px;
+    width: 150px;
+    border-radius: 4px;
+    margin-top: 20px;
   }

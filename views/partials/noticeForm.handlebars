@@ -1,10 +1,24 @@
+{{!-- <div class="notice-group" style="display:inline;">
+            <input type="text" required placeholder="Add notice " class="form-control" name="text">
+            <!--<textarea id="editor" cols="50" rows="10" required ></textarea>-->
+            <div id="editor"></div>
+            <input type="text" placeholder="Put Start date here" class="date" id="date_pickerStart" name="start" readonly />
+            <input type="text" placeholder="Put End date here" class="date" id="date_pickerEnd" name="end" readonly/>
+        </div>
+        <div class="addbutton-group" style="display:inline;" >
+            <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled = "true">Add</button>
+        </div> --}}
+
 <form action="POST">
     <input type="hidden" name="condoName" value="">
-    <div class="form-group">
+    <div class="notice-group form-group">
         <input type="text" required placeholder="Add notice " class="form-control" name="text">
+        <div id="editor"></div>
         <textarea class="form-control" name="textBody" id="" cols="30" rows="10"></textarea>
-        <input type="text" required placeholder="Start date as YYYY-MM-DD hh:mm" class="form-control" name="start">
-        <input type="text" required placeholder="End date as YYYY-MM-DD hh:mm" class="form-control" name="end">
+        <input type="text" placeholder="Select Start date" class="date" id="date_pickerStart" name="start" readonly />
+        <input type="text" placeholder="Select End date" class="date" id="date_pickerEnd" name="end" readonly/>
     </div>
-    <button class="btn btn-success" type="submit" name="{{addCondo}}">Add</button> 
+        <div class="addbutton-group" style="display:inline;" >
+        <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled = "true">Add</button>
+    </div> 
 </form>

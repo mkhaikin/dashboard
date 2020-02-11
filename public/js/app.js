@@ -1,5 +1,6 @@
 /* Toggle full-screen*/
-var elem = document.documentElement;
+const elem = document.documentElement;
+
 function openFullscreen() {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();

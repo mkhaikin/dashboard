@@ -170,6 +170,10 @@ form button {
     flex-direction: column;
 }
 
+.notices p {
+    padding-right:5px;
+    margin:0;
+}
 .content-notices {
     width: 100%;
     margin: 0 auto;
@@ -185,7 +189,7 @@ form button {
     /* padding: 10px; */
     height: 100%;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .pic img {

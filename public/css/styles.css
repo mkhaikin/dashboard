@@ -164,7 +164,17 @@ form .form-control {
 form button {
     width: 100px;
 }
-/*  Notices   */
+/*  NoticeBoard   */
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard{
+    margin-bottom: 80px;
+}
+
 .notices {
     display: flex;
     flex-direction: column;
@@ -196,4 +206,15 @@ form button {
     width: 35px;
     height: 35px;
     border: solid 1px #000;
+  }
+
+.bts {
+    display: flex;
+    justify-content: center;
+}
+  /* Full screen buttons */
+  button {
+    width: 30%;
+    padding: 20px;
+    font-size: 20px;
   }

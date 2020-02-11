@@ -17,6 +17,7 @@
 
 <div class="main">  
     <h1 class="text-center mb-3">{{title}}</h1>
+    
     <div class="dashboard">
         <div class="dashboard-from">
             {{> noticeForm }}
@@ -24,5 +25,11 @@
         <div class="notices">
             {{> notices}}
         </div>
+        
     </div>
+
+    <div class="bts">
+            <button class="" onclick="openFullscreen();">Open Fullscreen</button>
+            <button class="" onclick="closeFullscreen();">Close Fullscreen</button>
+        </div>
 </div>

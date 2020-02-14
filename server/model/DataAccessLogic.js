@@ -3,6 +3,7 @@
 const ACC = require('./account');
 //import { Result } from 'model/result';
 const NS = require('./noticeservice');
+//import { NoticeService as NS } from "./noticeservice";
 
 class DataAccessLogic {
     constructor() {

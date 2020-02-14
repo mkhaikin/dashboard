@@ -212,3 +212,4 @@ class NoticeService {
 }
 
 module.exports = new NoticeService(); 
+//export class NoticeService {}

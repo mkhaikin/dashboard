@@ -115,11 +115,6 @@ img {
         justify-content: space-between;
     }
 }
-/* DASHBOARD*/
-.dashboard{
-    display: flex;
-    justify-content: space-around;
-}
 
 /* LOGIN FORM*/
 .login{
@@ -173,9 +168,15 @@ form button {
 
 .dashboard{
     margin-bottom: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center ;
+    padding-left: 12%;
+    padding-right: 15%;
 }
 
 .notices {
+    padding-left:5% ;
     display: flex;
     flex-direction: column;
 }

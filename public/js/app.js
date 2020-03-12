@@ -124,7 +124,9 @@ $('button[type= submit]').on('click', function(event){
         event.preventDefault();// prevent the Browser from refreshing
     
         const condoName = $('input[name ="condoName"]').val().trim();
+        alert(condoName);
         const noticeText = $('input[name="text"]').val().trim();
+        alert(noticeText);
         const noticeStart = $('input[name="start"]').val().trim();
         const noticeEnd = $('input[name="end"]').val().trim();
 
@@ -133,27 +135,29 @@ $('button[type= submit]').on('click', function(event){
             return;
         }
         
-        if (Date.parse(noticeStart) > Date.parse(noticeEnd) || Date.parse(noticeStart) == Date.parse(noticeEnd)) {
+        if(Date.parse(noticeStart) > Date.parse(noticeEnd) || Date.parse(noticeStart) == Date.parse(noticeEnd)) {
             alert( 'Error: Start Date Greater End Date or equal!!');
             return;
         }
-        
-        var arr = $('.iconlist > *');
-        var pId = 1;
-        var psrc = null;
-        for (var i = 0; i < arr.length; i++) {
-            if(arr.eq(i).attr('style').includes("inline")){
-                psrc = arr.eq(i).find('img').attr('src');
-                var atr = arr.eq(i).find('img').attr('id');
-                pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
-            //   alert(pId);                
-                break;
-            }
-        }
-        const noticeImgId = pId;
-        const noticeImgSrc = psrc;
-        
-        //alert('Submit! ' + noticeText);
+        alert("dates ok");
+        // var arr = $('.iconlist > *');
+        // var pId = 1;
+        // var psrc = null;
+        // for (var i = 0; i < arr.length; i++) {
+        //     if(arr.eq(i).attr('style').includes("inline")){
+        //         psrc = arr.eq(i).find('img').attr('src');
+        //         var atr = arr.eq(i).find('img').attr('id');
+        //         pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
+        //     //   alert(pId);                
+        //         break;
+        //     }
+        // }
+        const noticeImgId = 4; //pId; db id value  
+        alert(noticeImgId);
+
+        const noticeImgSrc = "Notice.png" ;//psrc; psrc img name
+        alert(noticeImgSrc);
+        alert('Submit! ' + noticeText);
 
         $.ajax({
             url: 'http://localhost:3000/dashboard/add',

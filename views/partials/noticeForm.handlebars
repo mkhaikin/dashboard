@@ -9,16 +9,19 @@
             <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled = "true">Add</button>
         </div> --}}
 
-<form action="POST">
-    <input type="hidden" name="condoName" value="">
-    <div class="notice-group form-group">
-        <input type="text" required placeholder="Add notice " class="form-control" name="text">
-        <div id="editor"></div>
-        <textarea class="form-control" name="textBody" id="" cols="30" rows="10"></textarea>
-        <input type="text" placeholder="Select Start date" class="date" id="date_pickerStart" name="start" readonly />
-        <input type="text" placeholder="Select End date" class="date" id="date_pickerEnd" name="end" readonly/>
-    </div>
+<form>
+    <div class="form-group">
+        <input type="hidden" name="condoName" value="{{data.0.name}}">
+        <input type="hidden" name="noticeID" value="{{id}}">
+        <div class="notice-group" style="display:inline;">
+            <input type="text" required placeholder="Add notice " class="form-control" name="text">
+            <textarea class="form-control" name="textBody" id="" cols="30" rows="10" name=""></textarea>
+            <input type="text" placeholder="Select Start date" class="date" id="date_pickerStart" name="start" readonly />
+            <input type="text" placeholder="Select End date" class="date" id="date_pickerEnd" name="end" readonly/>
+        </div>
         <div class="addbutton-group" style="display:inline;" >
-        <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled = "true">Add</button>
-    </div> 
+            <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled="true">Add</button>
+        </div> 
+    </div>
+   
 </form>

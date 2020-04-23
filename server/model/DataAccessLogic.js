@@ -9,11 +9,10 @@ class DataAccessLogic {
     constructor() {
     }
     
-    async validateUser(username, password) {
-            
-            var res = await ACC.validateAccount(username, password);
+    async validateUser(username, password) { 
+        var res = await ACC.validateAccount(username, password);
         // data validation
-            return res;
+        return res;
     };
 
     async getallNotices(CondoCode){
@@ -63,8 +62,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async deleteNoticeById(idNote){
-        var res = await NS.deleteNoticeById(idNote);
+    async deleteNoticeById(itemId){
+        var res = await NS.deleteNoticeById(itemId);
         return res;
     };
 

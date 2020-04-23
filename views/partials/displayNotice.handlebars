@@ -1,16 +1,22 @@
-<div class= "notice-item" style="display:block;" id={{id}} >
-    <div class="content-notice_list">
-        {{!-- <div class="pic" style="display:inline;">
-            <img src="{{icon}}" onError="this.onerror=null;this.src='/images/Notice.png';" >
-        </div> --}}
-        <div class="noticetext">
+<div class= "notice-item" id={{id}} >
+    <div class="image">
+        <img src="{{icon}}" onError="this.onerror=null;this.src='/images/Notice.png';" >
+    </div>
+    <div class="notice-content">
+       <div class="notice-text">
             <p>{{text}}</p>
         </div>
-            {{!-- <div class = "noticestart">
-        <p>Start: {{start}}</p>
-        </div> 
-        <div class = "noticeend">    
-            <p>End: {{end}}</p>
-        </div>      --}}
+        <div class="notice-dates">
+            <p class="noticestart">
+                <span>{{start}}</span>
+            </p>
+            <p class="noticeend">    
+                <span>{{end}}</span>
+            </p>   
+        </div>
+    </div>
+    <div class="actions hide">
+        <button type="button" data-id="{{id}}" class="btn btn-success" name="edit">Edit</button>
+        <button type="button" data-id="{{id}}" class="btn btn-danger" name="delete">Del</button>
     </div>
 </div>

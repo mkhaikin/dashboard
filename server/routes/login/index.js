@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 //const conn = require('../../database/conn/MySQLConnect');
-const  transactions = require('../../database/trans/transactions'); 
+//const  transactions = require('../../database/trans/transactions'); 
 const pool = require('../../database/conn/Pool'); 
-
 const DAL = require('../../model/DataAccessLogic');
 
 module.exports = () => {
@@ -41,11 +40,11 @@ module.exports = () => {
     */
 /**/
    router.post('/', async function(req, res, next) {
-        var username = req.body.username;
+        var userName = req.body.username;
         var password = req.body.password;
-        if (username && password) {
+        if (userName && password) {
             try{
-                var result = await DAL.validateUser(username,password);
+                var result = await DAL.validateUser(userName,password);
 
                 /* example of result JSON structure reading
                 const data = JSON.parse(JSON.stringify(result));
@@ -63,8 +62,10 @@ module.exports = () => {
 
                 if(result.data != 0) {
                     console.log('Username and Password are correct!'); 
-                    req.session.loggedin = true;
-                    req.session.username = username;
+                    console.log(userName+' is logged in!');
+                    req.session.loggedIn = true;
+                    req.session.userName = userName;
+                    
                     res.redirect('/dashboard');
                 } else {                  
                         //res.send('Incorrect Username and/or Password!');

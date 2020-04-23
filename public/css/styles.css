@@ -139,129 +139,151 @@ h1 {
     padding: 20px 0 20px 0;
 }
 
-form {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 500px;
-    align-items: center;
-    margin: 0 auto;
-}
-
-form .form-group {
-    width: 100%;
-}
-
-form .form-control {
-    margin-bottom: 5px;
-}
-
-form button {
-    width: 100px;
-}
 /*  NoticeBoard   */
 .main {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+    .dashboard {
+        margin-bottom: 60px;
+        padding: 0 25px 0 25px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center ;
+    }
+    .btns {
+        text-align: center;
+        padding-bottom: 40px;
+    }
 
-.dashboard{
-    margin-bottom: 80px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center ;
-    padding-left: 12%;
-    padding-right: 15%;
+    /* Form */
+    form {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 300px;
+        align-items: center;
+        margin: 0 auto;
+    }
+    form .form-group {
+        width: 100%;
+    }
+    /* form .notice-group {
+    
+    } */
+    form .form-control {
+        margin-bottom: 5px;   
+    }
+    form .text {
+        margin-bottom: 10px;   
+
+    }
+    form input:nth-child(3) {
+        margin-bottom: 20px;
+    }
+
+    form button {
+        width: 100px;
+        margin-bottom: 5px;
+    }
+    #cancelbtn {
+        display: inline;
+    }
+
+    /* Notices */
+        .notices {
+            padding-left: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            /* overflow: hidden; */
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+            .notices-list {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin: 0 auto;
+                overflow: auto;
+                padding: 0;
+            }
+                .notice-item {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    position: relative;
+                    background: lightgray;
+                    padding: 5px 10px;
+                    border: solid 2px lightgray;
+                    border-radius: 8px;
+                    margin-bottom: 8px;  
+                }
+                    .image {
+                        width: 50px;
+                    }
+                    .notice-content {
+                        display: flex;
+                        flex-direction: column;  
+                        padding-left: 20px; 
+                        flex: 2;          
+                    }
+                        .notice-text {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0;
+                            margin-bottom:0;
+                            /* overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis; */
+                        }
+                        .notice-dates {
+                            display: flex;
+                            flex-direction: row;
+                        }
+                            .noticestart {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                            }
+                            .noticeend {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding-left: 25px;
+                            }
+                    .actions {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-around;
+                        position: absolute;
+                        right: 40px;
+                        padding: 0;
+                        margin: 0;
+                    }
+                        .btn {
+                            padding-left: 25px;
+                            padding-right: 25px;
+                        }
+
+.hide {
+    display: none;
 }
 
-.notices {
-    padding-left:5% ;
-    display: flex;
-    flex-direction: column;
+.selected-item {
+    border: solid 2px #006699;
 }
 
-/* .notices p {
-    display: flex;
-    justify-content: space-between;
-    padding-right:5px;
-    margin:0;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-} */
-
-.notices p{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: lightgray;
-    padding: 0px;
-    height: 25px;
-    border-radius: 4px;
-    margin:3px 0 0 5px;
-    width: 50ch;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-.content-notices {
-    width: 100%;
-    margin: 0 auto;
-    overflow: auto;
-    padding: 0;
-}
-
-.content-notice_list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: lightgray;
-    /* padding: 10px; */
-    height: 100%;
-    border-radius: 4px;
-    margin-bottom: 5px;
-}
-
-.pic img {
-    width: 35px;
-    height: 35px;
-    border: solid 1px #000;
-  }
-
-.bts {
+.btn {
     display: flex;
     justify-content: center;
 }
-  /* Full screen buttons */
-  button {
-    width: 30%;
-    padding: 20px;
+
+/* Full screen switch buttons */
+button {
+    width: 25%;
+    padding: 10px;
     font-size: 20px;
-  }
-
-  .noticestart {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: lightgray;
-    padding: 5px;
-    height: 70px;
-    width: 150px;
-    border-radius: 4px;
-    margin-top: 20px;
-  }
-
-  .noticeend {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: lightgray;
-    padding: 5px;
-    height: 70px;
-    width: 150px;
-    border-radius: 4px;
-    margin-top: 20px;
-  }
+}

@@ -44,11 +44,11 @@ class NoticeService {
 
     }
     //DELETE
-    async deleteNoticeById(idNote){
+    async deleteNoticeById(itemId){
         try{
-            const result = await transactions.deleteNoticeByID(idNote);
+            const result = await transactions.deleteNoticeByID(itemId);
             if(result > 0) {
-            //console.log('Success');
+                console.log('------------ Deleting Notice -----------');
                 return { data: result, message: "Deleted" };
             } else { 
                 //console.log('No id found!');

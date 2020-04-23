@@ -10,18 +10,25 @@
         </div> --}}
 
 <form>
+    <h2>Notice Form</h2>
     <div class="form-group">
-        <input type="hidden" name="condoName" value="{{data.0.name}}">
-        <input type="hidden" name="noticeID" value="{{id}}">
-        <div class="notice-group" style="display:inline;">
-            <input type="text" required placeholder="Add notice " class="form-control" name="text">
-            <textarea class="form-control" name="textBody" id="" cols="30" rows="10" name=""></textarea>
-            <input type="text" placeholder="Select Start date" class="date" id="date_pickerStart" name="start" readonly />
-            <input type="text" placeholder="Select End date" class="date" id="date_pickerEnd" name="end" readonly/>
+        <input type="hidden" name="userName" value="{{data.0.name}}">
+        <input type="hidden" name="noticeId" value="{{id}}">
+        <div class="notice-group">
+            <input type="text" required placeholder="Add new notice " class="form-control text" name="text">
+            {{!-- <textarea class="form-control" name="textBody" id="" cols="30" rows="10" name=""></textarea> --}}
+            <input type="text" placeholder="Select Start date" class="form-control date" id="date_pickerStart" name="start" readonly />
+            <input type="text" placeholder="Select End date" class="form-control date" id="date_pickerEnd" name="end" readonly/>
+        
+            <div class="addbutton-group">
+                <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled="true">Add</button>
+            </div>
+            <div class="editbutton-group" style="display:none;">
+                <button class="btn btn-success" type="button" name="updateNotice">Save</button>            
+            </div>
+            <div class="cancelbutton-group">
+                <button id="cancelbtn" class="btn btn-warning" type="button" name="cancelEdit">Cancel</button>
+            </div>
         </div>
-        <div class="addbutton-group" style="display:inline;" >
-            <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled="true">Add</button>
-        </div> 
     </div>
-   
 </form>

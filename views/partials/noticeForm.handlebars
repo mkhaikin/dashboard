@@ -1,33 +1,18 @@
-{{!-- <div class="notice-group" style="display:inline;">
-            <input type="text" required placeholder="Add notice " class="form-control" name="text">
-            <!--<textarea id="editor" cols="50" rows="10" required ></textarea>-->
-            <div id="editor"></div>
-            <input type="text" placeholder="Put Start date here" class="date" id="date_pickerStart" name="start" readonly />
-            <input type="text" placeholder="Put End date here" class="date" id="date_pickerEnd" name="end" readonly/>
-        </div>
-        <div class="addbutton-group" style="display:inline;" >
-            <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled = "true">Add</button>
-        </div> --}}
-
 <form>
     <h2>Notice Form</h2>
     <div class="form-group">
         <input type="hidden" name="userName" value="{{data.0.name}}">
         <input type="hidden" name="noticeId" value="{{id}}">
         <div class="notice-group">
-            <input type="text" required placeholder="Add new notice " class="form-control text" name="text">
+            <input type="text" placeholder="Add new notice " class="form-control text" name="text" required>
             {{!-- <textarea class="form-control" name="textBody" id="" cols="30" rows="10" name=""></textarea> --}}
-            <input type="text" placeholder="Select Start date" class="form-control date" id="date_pickerStart" name="start" readonly />
-            <input type="text" placeholder="Select End date" class="form-control date" id="date_pickerEnd" name="end" readonly/>
-        
-            <div class="addbutton-group">
-                <button class="btn btn-success" type="submit" id="data_submit" name="addNotice" disabled="true">Add</button>
-            </div>
-            <div class="editbutton-group" style="display:none;">
-                <button class="btn btn-success" type="button" name="updateNotice">Save</button>            
-            </div>
-            <div class="cancelbutton-group">
-                <button id="cancelbtn" class="btn btn-warning" type="button" name="cancelEdit">Cancel</button>
+            <input type="text" placeholder="Select Start date" class="form-control date" id="date_pickerStart" name="start" readonly required/>
+            <input type="text" placeholder="Select End date" class="form-control date" id="date_pickerEnd" name="end" readonly required/>
+            <div class="btn-group">
+                <button id="data_submit" class="btn btn-success" type="submit" name="addNotice" disabled="true">Add</button>
+                <button id="editBtn" class="btn btn-success hide" type="button" name="updateNotice">Save</button>
+                <button id="cancelBtn" class="btn btn-warning" type="button" name="cancelEdit">Cancel</button>
+                <button id="delBtn" class="btn btn-danger hide" type="button" name="delete">Delete</button>
             </div>
         </div>
     </div>

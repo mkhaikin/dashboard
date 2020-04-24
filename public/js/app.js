@@ -295,7 +295,6 @@ $('.notices-list').on('click', '.notice-item', function() {
         
     });
 });
-
 // extra
 // in every notice record there are two buttons 
     // if(name == "edit"){// edit button pressed
@@ -487,7 +486,7 @@ $('select.noticetypeselect').on('change', function() {
                 $(value).attr('style','display: none');
             }
         }); 
-        //event.preventDefault();
+    //event.preventDefault();
     } else if(selectedValue == 3){ 
             //alert("Future!");
             $('.notice-item').each((index, value) => {
@@ -513,8 +512,8 @@ $('select.noticetypeselect').on('change', function() {
         }
  });
 
- $(document).ready(function() {
-      $('input[name="text"]').on("propertychange change keyup paste input", function () {
+$(document).ready(function() {
+    $('input[name="text"]').on("propertychange change keyup paste input", function () {
         if ($(this).val() == '') {
             //Check to see if there is any text entered
             // If there is no text within the input then disable the button
@@ -526,7 +525,7 @@ $('select.noticetypeselect').on('change', function() {
             
             if(noticeEnd != "" &&  noticeStart != ""){
                 $("#data_submit").attr("disabled", false);
-                $('#data_preview').prop('disabled', false);
+                // $('#data_preview').prop('disabled', false); DOES NOT EXIST YET
             }
         }
     });
@@ -540,7 +539,6 @@ $('select.noticetypeselect').on('change', function() {
             let noticeText = $('input[name="text"]').val().trim();
             //let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
-            
             if(noticeEnd != "" &&  noticeText != "")
             {
                 $("#data_submit").attr("disabled", false);

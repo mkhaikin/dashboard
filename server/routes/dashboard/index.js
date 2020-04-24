@@ -41,8 +41,10 @@ module.exports = () => {
 
         // const userName = req.body.userName;
         const noticeText = req.body.text;
-        const noticeStart = req.body.start + ":00"; //for full time format in db
-        const noticeEnd = req.body.end + ":00";
+        const noticeStart = req.body.start;
+        const noticeEnd = req.body.end;
+        const noticeStartFull = req.body.start + ":00"; //for full time format in db
+        const noticeEndFull = req.body.end + ":00";
         const noticeImgId = req.body.imgId;
         // const noticeImgSrc = req.body.imgSrc;
         console.log('----- Inserting notice into DB -----');
@@ -63,7 +65,7 @@ module.exports = () => {
         var result = '';
         
         try{
-            result = await DAL.insertNotice(userName, noticeText, noticeStart, noticeEnd, noticeImgId);
+            result = await DAL.insertNotice(userName, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
 
             if(result.data > 0) {
                 console.log('Result is not empty. Insert done! id:' + result.data + '\n----------------------------------------'); 
@@ -94,25 +96,26 @@ module.exports = () => {
     });
 
     router.post('/edit', async (req, res, next) => {
-
         if (req.session.loggedIn) {
             const noticeId = req.body.noticeId;
             const noticeText = req.body.text;
-            const noticeStart = req.body.start + ":00"; //for full time format in db
-            const noticeEnd = req.body.end + ":00";
+            const noticeStart = req.body.start; 
+            const noticeEnd = req.body.end;
+            const noticeStartFull = req.body.start + ":00"; //for full time format in db
+            const noticeEndFull = req.body.end + ":00";
             const noticeImgId = req.body.imgId;
             if (noticeId && noticeText && noticeStart && noticeEnd && noticeImgId) {
                 console.log('------------ Editing Notice ----------\nuser '+ req.session.userName +' is updating notice id:'+ noticeId);
                 try{
-                    var result = await DAL.updateNotice(noticeId, noticeText, noticeStart, noticeEnd, noticeImgId);
+                    var result = await DAL.updateNotice(noticeId, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
         
                     if(result.data > 0) {
-                        console.log('Result is not empty. Update done! ' + result.data+'\n----------------------------------------'); 
+                        console.log('Result is not empty. Update done! ' + result.data +'\n----------------------------------------'); 
                         return res.json(
                             {
-                                text: req.body.text,
-                                start: req.body.start,
-                                end: req.body.end,
+                                text: noticeText,
+                                start: noticeStart,
+                                end: noticeEnd,
                                 noticeId: req.body.noticeId,
                                 ImgId: noticeImgId
                         });

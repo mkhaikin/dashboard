@@ -116,6 +116,7 @@ const addCondoFail = (response) => {
 const cancelBtn = ()=>{
     $('.form-group input').val("");
     $('#editBtn').addClass('hide');
+    $('#delBtn').addClass('hide');
     $('#data_submit').removeClass('hide');
     $('.notice-item').removeClass('selected-item');
 }

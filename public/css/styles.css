@@ -18,6 +18,9 @@ html, body {
     color: #4d4d4d;
     background: #efefef;
 }
+h2{
+    text-align: center;
+}
 a {
     text-decoration: none;
 }
@@ -169,9 +172,12 @@ h1 {
     form .form-group {
         width: 100%;
     }
-    /* form .notice-group {
-    
-    } */
+    form .btn-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
     form .form-control {
         margin-bottom: 5px;   
     }
@@ -184,11 +190,14 @@ h1 {
     }
 
     form button {
-        width: 100px;
+        width: 200px;
         margin-bottom: 5px;
     }
-    #cancelbtn {
-        display: inline;
+    .btn {
+        padding-left: 25px;
+        padding-right: 25px;
+        display: flex;
+        justify-content: center;
     }
 
     /* Notices */
@@ -219,6 +228,10 @@ h1 {
                     border: solid 2px lightgray;
                     border-radius: 8px;
                     margin-bottom: 8px;  
+                }
+
+                .notice-item:hover{
+                    background: #efefef;
                 }
                     .image {
                         width: 50px;
@@ -254,36 +267,18 @@ h1 {
                                 align-items: center;
                                 padding-left: 25px;
                             }
-                    .actions {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-around;
-                        position: absolute;
-                        right: 40px;
-                        padding: 0;
-                        margin: 0;
-                    }
-                        .btn {
-                            padding-left: 25px;
-                            padding-right: 25px;
-                        }
+
 
 .hide {
     display: none;
 }
 
 .selected-item {
-    border: solid 2px #006699;
-}
-
-.btn {
-    display: flex;
-    justify-content: center;
+    border: solid 2px;
+    border-color: lightskyblue;
+    background-color: #efefef;
+    transition: border-color .15s ease-in-out,box-shadow .20s ease-in-out;
 }
 
 /* Full screen switch buttons */
-button {
-    width: 25%;
-    padding: 10px;
-    font-size: 20px;
-}
+

@@ -40,7 +40,6 @@ const noticeTemplate = (id, title, text, start, end, srcImg) => {
     //Append the the <img> to the .image div
     image.html(noticeImg);
     noticeItem.append(image);
-    
     // Create new .notice-content
     // create notice-title and notice-text
     const noticeContent = $('<div>').attr({
@@ -52,7 +51,7 @@ const noticeTemplate = (id, title, text, start, end, srcImg) => {
     const innerTitle = $('<p>').html(title);
     noticeTitle.html(innerTitle);
     const noticeText = $('<div>').attr({
-        class: 'notice-title'
+        class: 'notice-text'
     });
     const innerText = $('<p>').html(text);
     noticeText.html(innerText);
@@ -112,10 +111,11 @@ const displayEditNotice = (notice) => {
     const newIconSrc = imgId;
     //put data into notice-item by id
     $(`.notice-item[id=${id}] .image img`).attr("src", newIconSrc);
+    $(`.notice-item[id=${id}] .notice-content .notice-title p`).html(title);
     $(`.notice-item[id=${id}] .notice-content .notice-text p`).html(text);
     $(`.notice-item[id=${id}] .noticestart span`).text(start);
     $(`.notice-item[id=${id}] .noticeend span`).text(end);
-    $('input').val('');
+    emptyValues();
     cancelBtn();
     return;
 }
@@ -235,7 +235,6 @@ $('button[type=submit]').on('click', function(event){
         .catch(addCondoFail);
     }
 });
-
 // When a user selects on of the items
 $('.notices-list').on('click', '.notice-item', function() {
     // removes .selected-item and adds it to newly selected item
@@ -310,55 +309,10 @@ $('.notices-list').on('click', '.notice-item', function() {
         }
     });
 });
-// extra
-// in every notice record there are two buttons 
-// edit button pressed
-    // if(name == "edit"){
-    //     //find add class .selected to selected item
-    //     //hide add buttons and show edit, save id value
-    //     $('.addbutton-group').css('display','none');        
-    //     $('.editbutton-group').css('display','inline');
-    //     $('.form-group input[name ="noticeId"]').val(id); // save notice id in hidden field
-    //     // $('.content-notice button').prop('disabled', true); //disable all Delete/Edit buttons until Save/Cancel pressed
-    //    //read values from editing notice ///FIX LATER///
-    //     // var iconsrc = $(this).closest('.content-notice .content-notice__list').find('img').attr('src');
-    //     // showEditIcon(iconsrc);
-    //     var textcontent = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
-    //     var start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().replace("Start:", "").trim();
-    //     var end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().replace("End:", "").trim();
-    //     //put editing data into edit fields
-    //     $('.form-group input[name="text"]').val(textcontent);
-    //     $('.form-group input[name="start"]').val(start);
-    //     $('.form-group input[name="end"]').val(end);
-    // }
-    // else if(name == "delete"){// Delete button pressed, send delete to midleware by id of record
-    //     var textcontent = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
-    //     $('.form-group input[name="text"]').val(textcontent);
-    //     $('.form-group input[name="start"]').val(start);
-    //     $('.form-group input[name="end"]').val(end);
-    //     var answer = confirm('Are you sure you want to DELETE '+ id);
-    //     if (answer == true) {
-    //         $.ajax({
-    //             url: 'http://localhost:3000/dashboard/delete',
-    //             method: 'DELETE',
-    //             data: {
-    //                 noticeId: id
-    //                 }
-    //             })
-    //             .then(removeNoticeOnDelete)
-    //             .catch(removeNoticeFailed);
-    //     } else {
-    //         cancelBtn();
-    //         return;
-    //     }
-    // } 
-
 //datapicker
-$('input[type= text]').on('click', function(event){
-   
+$('input[type=text]').on('click', function(event){
     const name = $(this).attr('name');
     const id = $(this).attr('id');
-    
     if(name == "start" || name == "end"){
         //$('#date_pickerStart').datetimepicker({
         $(this).datetimepicker({
@@ -417,7 +371,6 @@ $('input[type= text]').on('click', function(event){
         });   
     }
 });
-
 //change icon image on click
 $('.iconlist ').on('click', function() {
     //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
@@ -438,7 +391,6 @@ $('.iconlist ').on('click', function() {
     }
     
 });
-
 // const showEditIcon = (srcStr) => {
 //     var arr = $('.form-group .iconlist > *');
    
@@ -450,7 +402,6 @@ $('.iconlist ').on('click', function() {
 //         if(srcStr == atr) arr.eq(i).css('display','inline');
 //     }
 // };
-
 const getDisplayedIconId = ()=>{
     var arr = $('.form-group .iconlist > *');
     var pId = 1;
@@ -463,7 +414,6 @@ const getDisplayedIconId = ()=>{
     }
     return pId;
 };
-
 const getIconSrcById = (iconId)=>{
     var src = "/images/Notice.png";
     var arr = $('.form-group .iconlist > *');
@@ -477,7 +427,6 @@ const getIconSrcById = (iconId)=>{
     }
     return src;
 };
-
 $('select.noticetypeselect').on('change', function() {
     var selectedValue = $(this).children("option:selected").val();
     var now = new Date().getTime();
@@ -526,8 +475,7 @@ $('select.noticetypeselect').on('change', function() {
                 }   
             });
         }
- });
-
+});
 $(document).ready(function() {
     $('input[name="text"]').on("propertychange change keyup paste input", function () {
         if ($(this).val() == '') {
@@ -552,10 +500,10 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeText = $('input[name="text"]').val().trim();
+            let noticeTitle = $('input[name="title"]').val().trim();
             //let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
-            if(noticeEnd != "" &&  noticeText != "")
+            if(noticeEnd != "" &&  noticeTitle != "")
             {
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
@@ -569,11 +517,11 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeText = $('input[name="text"]').val().trim();
+            let noticeTitle = $('input[name="title"]').val().trim();
             let noticeStart = $('input[name="start"]').val().trim();
             //let noticeEnd = $('input[name="end"]').val().trim();
             
-            if(noticeStart != "" &&  noticeText != "")
+            if(noticeStart != "" &&  noticeTitle != "")
             {
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
@@ -581,7 +529,6 @@ $(document).ready(function() {
         }
     });
 });
-
 // $(document).ready(function() {
 //     //$('#editor').val('Text');
 //     var toolbarOptions = [

@@ -27,9 +27,9 @@ class NoticeService {
 
     }
     //UPDATE
-    async updateNoticeById(id, text, start, end, imgId){
+    async updateNoticeById(noticeId, title, text, start, end, imgId){
         try{
-            const result = await transactions.updateNotice(id, text, start, end, imgId);
+            const result = await transactions.updateNotice(noticeId, title, text, start, end, imgId);
             if(result > 0) {
             //console.log('Success');
                 return { data: result, message: "Updated" };

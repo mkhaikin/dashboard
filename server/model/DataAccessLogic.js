@@ -57,8 +57,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async updateNotice(idNote,title, text, start, end, imgId){
-        var res = await NS.updateNoticeById(idNote, title, text, start, end, imgId);
+    async updateNotice(noticeId, title, text, start, end, imgId){
+        var res = await NS.updateNoticeById(noticeId, title, text, start, end, imgId);
         return res;
     };
 

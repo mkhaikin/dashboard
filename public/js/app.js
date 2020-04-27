@@ -1,6 +1,6 @@
 /* Toggle full-screen*/
 const elem = document.documentElement;
-function openFullscreen() {
+const openFullscreen = () => {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -11,7 +11,7 @@ function openFullscreen() {
     elem.msRequestFullscreen();
   }
 }
-function closeFullscreen() {
+const closeFullscreen = () => {
   if (document.exitFullscreen) {
     document.exitFullscreen();
   } else if (document.mozCancelFullScreen) {
@@ -169,10 +169,10 @@ const markActive = () => {
         alert( $(value).find('.noticestart p').text().replace("Start:", "").trim() + ' | ' + $(value).find('.noticeend p').text().replace("End:", "").trim());
     });   
 }
-function isBlank(str) {
+const isBlank = (str) => {
     return (!str || /^\s*$/.test(str));
 }
-function fillValues(noticeId,noticeTitle,noticeText,start,end){
+const fillValues = (noticeId,noticeTitle,noticeText,start,end) => {
     $('.form-group input[name ="noticeId"]').val(noticeId);
     $('.form-group input[name="title"]').val(noticeTitle);
     $('.form-group textarea[name="text"]').val(noticeText);

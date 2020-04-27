@@ -94,7 +94,7 @@ const displayNewNotice = (notice)=> {
     const newNotice = noticeTemplate(id, title, text, start, end, srcImg);
     $('.notices-list').prepend(newNotice);
     // alert('created new notice');
-    $('input').val('');
+    emptyValues();
     //disable the submit button
     $('#data_submit').attr('disabled', true);
 }
@@ -123,12 +123,15 @@ const addCondoFail = (response) => {
     alert('Failed to Add Notice');
 }
 const cancelBtn = ()=>{
-    $('.form-group input').val("");
-    $('.form-group textarea').val("");
+    emptyValues();
     $('#editBtn').addClass('hide');
     $('#delBtn').addClass('hide');
     $('#data_submit').removeClass('hide');
     $('.notice-item').removeClass('selected-item');
+}
+const emptyValues = ()=>{
+    $('input').val('');
+    $('textarea').val('');
 }
 const checkMinFormat = (noticeMin) => {
     //alert(noticeMin);

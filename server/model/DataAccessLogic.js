@@ -9,8 +9,8 @@ class DataAccessLogic {
     constructor() {
     }
     
-    async validateUser(username, password) { 
-        var res = await ACC.validateAccount(username, password);
+    async validateUser(userName, password) { 
+        var res = await ACC.validateAccount(userName, password);
         // data validation
         return res;
     };
@@ -21,8 +21,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async getallNoticesByCondoName(CondoName){
-        var res = await NS.getNoticesByCondoName(CondoName);
+    async getallNoticesByUserName(UserName){
+        var res = await NS.getNoticesByUserName(UserName);
         // data validation
         return res;
     };
@@ -33,8 +33,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async getNoticeInFull(condoname){
-        var res = await NS.getNoticesInFull(condoname);
+    async getNoticeInFull(UserName){
+        var res = await NS.getNoticesInFull(UserName);
         // data validation
         return res;
     };
@@ -45,8 +45,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async insertNotice(condo, text, start, end, imgId){
-        var res = await NS.insertNewNotice( condo, text, start, end, imgId);
+    async insertNotice(userName, title, text, start, end, imgId){
+        var res = await NS.insertNewNotice( userName, title, text, start, end, imgId);
         // data validation
         return res;
     };
@@ -57,8 +57,8 @@ class DataAccessLogic {
         return res;
     };
 
-    async updateNotice(idNote, text, start, end, imgId){
-        var res = await NS.updateNoticeById(idNote, text, start, end, imgId);
+    async updateNotice(idNote,title, text, start, end, imgId){
+        var res = await NS.updateNoticeById(idNote, title, text, start, end, imgId);
         return res;
     };
 

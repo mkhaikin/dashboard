@@ -204,8 +204,7 @@ h1 {
         .notices {
             padding-left: 10px;
             display: flex;
-            justify-content: space-around;
-            align-items: center;
+            justify-content: start;
             /* overflow: hidden; */
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -242,7 +241,7 @@ h1 {
                         padding-left: 20px; 
                         flex: 2;          
                     }
-                        .notice-text {
+                        .notice-title {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
@@ -251,6 +250,9 @@ h1 {
                             /* overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis; */
+                        }
+                        .notice-text {
+                            display: none;
                         }
                         .notice-dates {
                             display: flex;

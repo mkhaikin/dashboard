@@ -22,7 +22,7 @@ function closeFullscreen() {
     document.msExitFullscreen();
   }
 }
-const noticeTemplate = (id, text, start, end, srcImg) => {
+const noticeTemplate = (id, title, text, start, end, srcImg) => {
     //Create new .notice-item div
     // alert('constructing new noticeItem');
     const noticeItem = $('<div>').attr({
@@ -41,15 +41,23 @@ const noticeTemplate = (id, text, start, end, srcImg) => {
     image.html(noticeImg);
     noticeItem.append(image);
     
-    //Create new .notice-content and append .notice-text
+    // Create new .notice-content
+    // create notice-title and notice-text
     const noticeContent = $('<div>').attr({
         class: 'notice-content'
     });
-    const noticeText = $('<div>').attr({
-        class: 'notice-text'
+    const noticeTitle = $('<div>').attr({
+        class: 'notice-title'
     });
-    const title = $('<p>').html(text);
-    noticeText.html(title);
+    const title = $('<p>').html(title);
+    noticeTitle.html(title);
+    const noticeText = $('<div>').attr({
+        class: 'notice-title'
+    });
+    const innerText = $('<p>').html(text);
+    noticeText.html(innerText);
+    // and append both to notice-content
+    noticeContent.append(noticeTitle);
     noticeContent.append(noticeText);
     
     // Create .notice-dates div
@@ -78,11 +86,12 @@ const noticeTemplate = (id, text, start, end, srcImg) => {
 const displayNewNotice = (notice)=> {
     //const name = notice.condoName;
     const id = notice.noticeId;
+    const title = notice.title;
     const text = notice.text;
     const start = notice.start;
     const end = notice.end;
     const srcImg = notice.imgSrc;
-    const newNotice = noticeTemplate(id, text, start, end, srcImg);
+    const newNotice = noticeTemplate(id, title, text, start, end, srcImg);
     $('.notices-list').prepend(newNotice);
     // alert('created new notice');
     $('input').val('');
@@ -115,6 +124,7 @@ const addCondoFail = (response) => {
 }
 const cancelBtn = ()=>{
     $('.form-group input').val("");
+    $('.form-group textarea').val("");
     $('#editBtn').addClass('hide');
     $('#delBtn').addClass('hide');
     $('#data_submit').removeClass('hide');
@@ -156,9 +166,10 @@ const markActive = () => {
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
 }
-function fillValues(noticeId,noticeText,start,end){
+function fillValues(noticeId,noticeTitle,noticeText,start,end){
     $('.form-group input[name ="noticeId"]').val(noticeId);
-    $('.form-group input[name="text"]').val(noticeText);
+    $('.form-group input[name="title"]').val(noticeTitle);
+    $('.form-group textarea[name="text"]').val(noticeText);
     $('.form-group input[name="start"]').val(start);
     $('.form-group input[name="end"]').val(end);
 }
@@ -168,10 +179,11 @@ $('button[type=submit]').on('click', function(event){
     if(name == "addNotice"){
         event.preventDefault();// prevent the Browser from refreshing
         const userName = $('input[name ="userName"]').val().trim();
-        const noticeText = $('input[name="text"]').val().trim();
+        const noticeTitle = $('input[name="title"]').val().trim();
+        const noticeText = $('textarea[name="text"]').val().trim();
         const noticeStart = $('input[name="start"]').val().trim();
         const noticeEnd = $('input[name="end"]').val().trim();
-        if(isBlank(noticeText) || isBlank(noticeStart) || isBlank(noticeStart)){
+        if(isBlank(noticeTitle) || isBlank(noticeText) || isBlank(noticeStart) || isBlank(noticeEnd)){
             alert( 'Error! Empty field/s !');
             return;
         }
@@ -196,7 +208,7 @@ $('button[type=submit]').on('click', function(event){
         // alert("img id is: ". noticeImgId);
         const noticeImgSrc = "Notice.png" ;//psrc; psrc img name
         // alert("img name is: ".noticeImgSrc);
-        console.log('posting ' + noticeText);
+        console.log('posting ' + noticeTitle);
         // disable pressing the enter key !!!works only once
         // $(document).keypress(
         //     function(event){
@@ -210,6 +222,7 @@ $('button[type=submit]').on('click', function(event){
             method: 'POST',
             data: {
                 user: userName,
+                title:noticeTitle,
                 text: noticeText,
                 start: noticeStart,
                 end: noticeEnd,
@@ -234,11 +247,12 @@ $('.notices-list').on('click', '.notice-item', function() {
     $('#delBtn').removeClass('hide');
     //Populate form
     const noticeId = $(this).closest('.notice-item').attr('id');
+    var noticeTitle = $(this).closest('.notice-item').find('.notice-content .notice-title').text().trim();
     var noticeText = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
     var start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().replace("Start:", "").trim();
     var end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().replace("End:", "").trim();
      // save notice id in hidden field
-    fillValues(noticeId,noticeText,start,end);
+    fillValues(noticeId,noticeTitle,noticeText,start,end);
         //To edit a notice, you must click on one of the notice items
     $('button[type= button]').on('click', function(event){ 
         const name = $(this).attr('name');
@@ -248,7 +262,8 @@ $('.notices-list').on('click', '.notice-item', function() {
         }
         else if(name == "updateNotice"){ //name == "edit ", read values from notice, start and end inputs 
             const noticeId = $('input[name ="noticeId"]').val().trim();
-            const noticeText = $('.form-group input[name="text"]').val().trim();
+            const noticeTitle = $('.form-group input[name="title"]').val().trim();
+            const noticeText = $('.form-group textarea[name="text"]').val().trim();
             var noticeStart = $('.form-group input[name="start"]').val().trim();
             var noticeEnd = $('.form-group input[name="end"]').val().trim();
             // alert('Before: ' + noticeStart + '|' + noticeEnd + '|' + noticeId);
@@ -265,6 +280,7 @@ $('.notices-list').on('click', '.notice-item', function() {
                 url: 'http://localhost:3000/dashboard/edit',
                 method: 'POST',
                 data: {
+                    title:noticeTitle,
                     text: noticeText,
                     start: noticeStart,
                     end: noticeEnd,
@@ -292,12 +308,12 @@ $('.notices-list').on('click', '.notice-item', function() {
                 return;
             }
         }
-        
     });
 });
 // extra
 // in every notice record there are two buttons 
-    // if(name == "edit"){// edit button pressed
+// edit button pressed
+    // if(name == "edit"){
     //     //find add class .selected to selected item
     //     //hide add buttons and show edit, save id value
     //     $('.addbutton-group').css('display','none');        
@@ -401,7 +417,6 @@ $('input[type= text]').on('click', function(event){
         });   
     }
 });
-
 //change icon image on click
 $('.iconlist ').on('click', function() {
     //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
@@ -422,10 +437,8 @@ $('.iconlist ').on('click', function() {
     }
     
 });
-
 // const showEditIcon = (srcStr) => {
 //     var arr = $('.form-group .iconlist > *');
-   
 //     for (var i = 0; i < arr.length; i++) {
 //         var atr = arr.eq(i).find('img').attr('src');
 //         if(arr.eq(i).attr('style').includes("inline") && srcStr != atr)
@@ -434,7 +447,6 @@ $('.iconlist ').on('click', function() {
 //         if(srcStr == atr) arr.eq(i).css('display','inline');
 //     }
 // };
-
 const getDisplayedIconId = ()=>{
     var arr = $('.form-group .iconlist > *');
     var pId = 1;
@@ -447,7 +459,6 @@ const getDisplayedIconId = ()=>{
     }
     return pId;
 };
-
 const getIconSrcById = (iconId)=>{
     var src = "/images/Notice.png";
     var arr = $('.form-group .iconlist > *');
@@ -461,7 +472,6 @@ const getIconSrcById = (iconId)=>{
     }
     return src;
 };
-
 $('select.noticetypeselect').on('change', function() {
     var selectedValue = $(this).children("option:selected").val();
     var now = new Date().getTime();
@@ -472,12 +482,10 @@ $('select.noticetypeselect').on('change', function() {
         }); 
     }         
     else if(selectedValue == 2){ 
-        
         $('.notice-item').each((index, value) => {
             //alert( $(value).find('.noticestart p').text().replace("Start:", "").trim() + ' | ' + $(value).find('.noticeend p').text().replace("End:", "").trim());
             var noticeStart = Date.parse($(value).find('.noticestart p').text().replace("Start:", "").trim());
             var noticeEnd = Date.parse($(value).find('.noticeend p').text().replace("End:", "").trim());
-            
             if ( noticeStart < now && noticeEnd > now) {
                 //alert("Active! " + "Start: " + noticeStart + " End: " + noticeEnd + " now: " + now);
                 $(value).attr('style','display: block');
@@ -513,7 +521,7 @@ $('select.noticetypeselect').on('change', function() {
  });
 
 $(document).ready(function() {
-    $('input[name="text"]').on("propertychange change keyup paste input", function () {
+    $('input[name="title"]').on("propertychange change keyup paste input", function () {
         if ($(this).val() == '') {
             //Check to see if there is any text entered
             // If there is no text within the input then disable the button
@@ -522,7 +530,6 @@ $(document).ready(function() {
         } else {
             let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
-            
             if(noticeEnd != "" &&  noticeStart != ""){
                 $("#data_submit").attr("disabled", false);
                 // $('#data_preview').prop('disabled', false); DOES NOT EXIST YET
@@ -536,10 +543,10 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeText = $('input[name="text"]').val().trim();
+            let noticeTitle = $('input[name="title"]').val().trim();
             //let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
-            if(noticeEnd != "" &&  noticeText != "")
+            if(noticeEnd != "" &&  noticeTitle != "")
             {
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
@@ -553,12 +560,11 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeText = $('input[name="text"]').val().trim();
+            let noticeTitle = $('input[name="title"]').val().trim();
+            let noticeText = $('textarea[name="text"]').val().trim();
             let noticeStart = $('input[name="start"]').val().trim();
             //let noticeEnd = $('input[name="end"]').val().trim();
-            
-            if(noticeStart != "" &&  noticeText != "")
-            {
+            if(noticeStart != "" &&  noticeTitle != "" &&  noticeText != ""){
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
             }

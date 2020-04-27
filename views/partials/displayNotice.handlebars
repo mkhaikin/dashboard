@@ -1,10 +1,14 @@
-<div class= "notice-item" id={{id}} >
+<div class= "notice-item" id={{id}}>
+    
     <div class="image">
         <img src="{{icon}}" onError="this.onerror=null;this.src='/images/Notice.png';" >
     </div>
     <div class="notice-content">
-       <div class="notice-text">
-            <p>{{text}}</p>
+       <div class="notice-title">
+            <p>{{title}}</p>
+        </div>
+        <div class="notice-text">
+            <p >{{text}}</p>
         </div>
         <div class="notice-dates">
             <p class="noticestart">

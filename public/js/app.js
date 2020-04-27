@@ -82,7 +82,7 @@ const noticeTemplate = (id, title, text, start, end, srcImg) => {
     noticeItem.append(noticeContent);
     return noticeItem;
 }
-const displayNewNotice = (notice)=> {
+const displayNewNotice = (notice) => {
     //const name = notice.condoName;
     const id = notice.noticeId;
     const title = notice.title;
@@ -100,6 +100,7 @@ const displayNewNotice = (notice)=> {
 const displayEditNotice = (notice) => { 
     //alert('displayEditNotice func '+ JSON.stringify(notice));
     const id = notice.noticeId;
+    const title = notice.title;
     const text = notice.text;
     var start = notice.start; //time from db in format YYYY-MM-DD hh:mm:ss, we need hh:mm only
     var arr = start.split(":");
@@ -108,9 +109,8 @@ const displayEditNotice = (notice) => {
     arr = end.split(":");
     end = arr[0] + ":" + arr[1]; //just hh:mm
     const imgId = notice.imgId;
-    const newIconSrc = imgId;
     //put data into notice-item by id
-    $(`.notice-item[id=${id}] .image img`).attr("src", newIconSrc);
+    $(`.notice-item[id=${id}] .image img`).attr("src", imgId);
     $(`.notice-item[id=${id}] .notice-content .notice-title p`).html(title);
     $(`.notice-item[id=${id}] .notice-content .notice-text p`).html(text);
     $(`.notice-item[id=${id}] .noticestart span`).text(start);
@@ -122,19 +122,18 @@ const displayEditNotice = (notice) => {
 const addCondoFail = (response) => {
     alert('Failed to Add Notice');
 }
-const cancelBtn = ()=>{
+const cancelBtn = () => {
     emptyValues();
     $('#editBtn').addClass('hide');
     $('#delBtn').addClass('hide');
     $('#data_submit').removeClass('hide');
     $('.notice-item').removeClass('selected-item');
 }
-const emptyValues = ()=>{
+const emptyValues = () => {
     $('input').val('');
     $('textarea').val('');
 }
 const checkMinFormat = (noticeMin) => {
-    //alert(noticeMin);
     var res = noticeMin.split(":");
     const n = res[1].length;
     if(n == 0){ return (noticeMin + ":00"); }
@@ -248,8 +247,8 @@ $('.notices-list').on('click', '.notice-item', function() {
     const noticeId = $(this).closest('.notice-item').attr('id');
     const noticeTitle = $(this).closest('.notice-item').find('.notice-content .notice-title').text().trim();
     const noticeText = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
-    const start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().replace("Start:", "").trim();
-    const end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().replace("End:", "").trim();
+    const start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().trim();
+    const end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().trim();
      // save notice id in hidden field
     fillValues(noticeId,noticeTitle,noticeText,start,end);
         //To edit a notice, you must click on one of the notice items
@@ -260,11 +259,12 @@ $('.notices-list').on('click', '.notice-item', function() {
             cancelBtn();
         }
         else if(name == "updateNotice"){ //name == "edit ", read values from notice, start and end inputs 
+            // alert('edit btn');
             const noticeId = $('input[name ="noticeId"]').val().trim();
             const noticeTitle = $('.form-group input[name="title"]').val().trim();
             const noticeText = $('.form-group textarea[name="text"]').val().trim();
-            const noticeStart = $('.form-group input[name="start"]').val().trim();
-            const noticeEnd = $('.form-group input[name="end"]').val().trim();
+            var noticeStart = $('.form-group input[name="start"]').val().trim();
+            var noticeEnd = $('.form-group input[name="end"]').val().trim();
             // alert('Before: ' + noticeStart + '|' + noticeEnd + '|' + noticeId);
             noticeStart = checkMinFormat(noticeStart); //formate time: minutes may be not in mm format
             noticeEnd = checkMinFormat(noticeEnd);
@@ -274,7 +274,7 @@ $('.notices-list').on('click', '.notice-item', function() {
             }
             //var iconId = getDisplayedIconId();
             //alert(iconId);
-            // alert('Updating Item with === After: ' + noticeStart + ' | ' + noticeEnd + ' | ' + noticeId);
+            alert('Updating Item with === After: ' + noticeStart + ' | ' + noticeEnd + ' | ' + noticeId);
             $.ajax({
                 url: 'http://localhost:3000/dashboard/edit',
                 method: 'POST',

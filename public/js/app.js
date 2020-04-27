@@ -143,6 +143,7 @@ const checkMinFormat = (noticeMin) => {
 }
 const editNoticeFailed = () => {
     alert('Fail editing notice');
+    return;
 }
 const removeNoticeOnDelete = (notice) => {
     const id = notice.noticeId;
@@ -288,9 +289,9 @@ $('.notices-list').on('click', '.notice-item', function() {
                     // icon: iconId - for when we create img feature.
                 }
             }).then(displayEditNotice)
-            .catch(editNoticeFailed);
+              .catch(editNoticeFailed);
         } else if(name == 'delete'){// Delete button pressed, send delete to midleware by id of record
-            const noticeId = $('input[name ="noticeId"]').val().trim();
+            const noticeId = $('input[name="noticeId"]').val().trim();
             const answer = confirm('Are you sure you want to DELETE '+ noticeId);
             if (answer == true) {
                 $.ajax({

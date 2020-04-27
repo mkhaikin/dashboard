@@ -96,6 +96,7 @@ const displayNewNotice = (notice) => {
     emptyValues();
     //disable the submit button
     $('#data_submit').attr('disabled', true);
+    return;
 }
 const displayEditNotice = (notice) => { 
     //alert('displayEditNotice func '+ JSON.stringify(notice));
@@ -121,6 +122,7 @@ const displayEditNotice = (notice) => {
 }
 const addCondoFail = (response) => {
     alert('Failed to Add Notice');
+    return;
 }
 const cancelBtn = () => {
     emptyValues();
@@ -153,6 +155,7 @@ const removeNoticeOnDelete = (notice) => {
 }
 const removeNoticeFailed = () => {
     alert('Fail deleting notice');
+    return;
 }
 const markActive = () => {
     /*
@@ -208,7 +211,7 @@ $('button[type=submit]').on('click', function(event){
         // }
         const noticeImgId = 4; //pId; db id value  
         const noticeImgSrc = "Notice.png" ;//psrc; psrc img name
-        console.log('posting ' + noticeTitle);
+        // console.log('posting ' + noticeTitle);
         // disable pressing the enter key !!!works only once
         // $(document).keypress(
         //     function(event){
@@ -232,10 +235,10 @@ $('button[type=submit]').on('click', function(event){
             }
         })
         .then(displayNewNotice)
-        .catch(addCondoFail);
+        .fail(addCondoFail);
     }
 });
-// When a user selects on of the items
+// When a user selects on one of the notice items
 $('.notices-list').on('click', '.notice-item', function() {
     // removes .selected-item and adds it to newly selected item
     $('.notice-item').removeClass('selected-item');
@@ -253,62 +256,68 @@ $('.notices-list').on('click', '.notice-item', function() {
      // save notice id in hidden field
     fillValues(noticeId,noticeTitle,noticeText,start,end);
         //To edit a notice, you must click on one of the notice items
-    $('button[type= button]').on('click', function(event){ 
-        const name = $(this).attr('name');
-        // $('.content-notice button').prop('disabled', false);
-        if(name == "cancelEdit"){   //if Cancel -> hide Save/Cancel buttons and show Add button, clear notise and date inputs
-            cancelBtn();
+});
+// Action buttons Save / Cancel / Delete
+$('button[type=button]').on('click', function(event){ 
+    const name = $(this).attr('name');
+    // $('.content-notice button').prop('disabled', false);
+    if(name == "cancelEdit"){   //if Cancel -> hide Save/Cancel buttons and show Add button, clear notise and date inputs
+        cancelBtn();
+        return;
+    }
+    else if(name == "updateNotice"){ //name == "edit ", read values from notice, start and end inputs 
+        // alert('edit btn');
+        const noticeId = $('input[name ="noticeId"]').val().trim();
+        const noticeTitle = $('.form-group input[name="title"]').val().trim();
+        const noticeText = $('.form-group textarea[name="text"]').val().trim();
+        var noticeStart = $('.form-group input[name="start"]').val().trim();
+        var noticeEnd = $('.form-group input[name="end"]').val().trim();
+        // alert('Before: ' + noticeStart + '|' + noticeEnd + '|' + noticeId);
+        noticeStart = checkMinFormat(noticeStart); //formate time: minutes may be not in mm format
+        noticeEnd = checkMinFormat(noticeEnd);
+        if (Date.parse(noticeStart) > Date.parse(noticeEnd) || Date.parse(noticeStart) == Date.parse(noticeEnd)) {
+            alert( 'Error: Start Date Greater End Date!!');
+            return;
         }
-        else if(name == "updateNotice"){ //name == "edit ", read values from notice, start and end inputs 
-            // alert('edit btn');
-            const noticeId = $('input[name ="noticeId"]').val().trim();
-            const noticeTitle = $('.form-group input[name="title"]').val().trim();
-            const noticeText = $('.form-group textarea[name="text"]').val().trim();
-            var noticeStart = $('.form-group input[name="start"]').val().trim();
-            var noticeEnd = $('.form-group input[name="end"]').val().trim();
-            // alert('Before: ' + noticeStart + '|' + noticeEnd + '|' + noticeId);
-            noticeStart = checkMinFormat(noticeStart); //formate time: minutes may be not in mm format
-            noticeEnd = checkMinFormat(noticeEnd);
-            if (Date.parse(noticeStart) > Date.parse(noticeEnd) || Date.parse(noticeStart) == Date.parse(noticeEnd)) {
-                alert( 'Error: Start Date Greater End Date!!');
-                return;
+        //var iconId = getDisplayedIconId();
+        //alert(iconId);
+        // alert('Updating Item with === After: ' + noticeStart + ' | ' + noticeEnd + ' | ' + noticeId);
+        $.ajax({
+            url: 'http://localhost:3000/dashboard/edit',
+            method: 'POST',
+            data: {
+                title:noticeTitle,
+                text: noticeText,
+                start: noticeStart,
+                end: noticeEnd,
+                noticeId: noticeId,
+                imgId: 4 // for now we use dummy notice
+                // icon: iconId - for when we create img feature.
             }
-            //var iconId = getDisplayedIconId();
-            //alert(iconId);
-            alert('Updating Item with === After: ' + noticeStart + ' | ' + noticeEnd + ' | ' + noticeId);
+        }).then(displayEditNotice)
+        // .fail(err=>{console.log(err)});
+        .fail(editNoticeFailed);
+    } else if(name == 'delete'){// Delete button pressed, send delete to midleware by id of record
+        const noticeId = $('input[name="noticeId"]').val().trim();
+        const answer = confirm('Are you sure you want to DELETE '+ noticeId);
+        if (answer == true) {
             $.ajax({
-                url: 'http://localhost:3000/dashboard/edit',
-                method: 'POST',
+                url: 'http://localhost:3000/dashboard/delete',
+                method: 'DELETE',
                 data: {
-                    title:noticeTitle,
-                    text: noticeText,
-                    start: noticeStart,
-                    end: noticeEnd,
-                    noticeId: noticeId,
-                    imgId: 4 // for now we use dummy notice
-                    // icon: iconId - for when we create img feature.
-                }
-            }).then(displayEditNotice)
-              .catch(editNoticeFailed);
-        } else if(name == 'delete'){// Delete button pressed, send delete to midleware by id of record
-            const noticeId = $('input[name="noticeId"]').val().trim();
-            const answer = confirm('Are you sure you want to DELETE '+ noticeId);
-            if (answer == true) {
-                $.ajax({
-                    url: 'http://localhost:3000/dashboard/delete',
-                    method: 'DELETE',
-                    data: {
-                        noticeId: noticeId
-                        }
-                    })
-                    .then(removeNoticeOnDelete)
-                    .catch(removeNoticeFailed);
-            } else {
-                cancelBtn();
-                return;
-            }
+                    noticeId: noticeId
+                    }
+                })
+                .then(removeNoticeOnDelete)
+                .fail(removeNoticeFailed);
+
+        } else {
+            cancelBtn();
+            return;
         }
-    });
+    } else {
+        return;
+    } 
 });
 //datapicker
 $('input[type=text]').on('click', function(event){

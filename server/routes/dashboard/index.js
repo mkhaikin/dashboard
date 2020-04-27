@@ -58,7 +58,7 @@ module.exports = () => {
                 message: 'Not able to add notice with missed data'
             });
         }
-        const result = '';   
+        var result = '';
         try{
             result = await DAL.insertNotice(userName, noticeTitle, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
             if(result.data > 0) {

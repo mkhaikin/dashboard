@@ -49,8 +49,8 @@ const noticeTemplate = (id, title, text, start, end, srcImg) => {
     const noticeTitle = $('<div>').attr({
         class: 'notice-title'
     });
-    const title = $('<p>').html(title);
-    noticeTitle.html(title);
+    const innerTitle = $('<p>').html(title);
+    noticeTitle.html(innerTitle);
     const noticeText = $('<div>').attr({
         class: 'notice-title'
     });
@@ -355,8 +355,10 @@ $('.notices-list').on('click', '.notice-item', function() {
 
 //datapicker
 $('input[type= text]').on('click', function(event){
+   
     const name = $(this).attr('name');
     const id = $(this).attr('id');
+    
     if(name == "start" || name == "end"){
         //$('#date_pickerStart').datetimepicker({
         $(this).datetimepicker({
@@ -415,27 +417,31 @@ $('input[type= text]').on('click', function(event){
         });   
     }
 });
-//change icon image on click
-// $('.iconlist ').on('click', function() {
-//     //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
-//     var arr = $('.iconlist > *');
-       
-//     for (var i = 0; i < arr.length; i++) {
-//         //alert('Display of #' + i + ': ' + arr.eq(i).attr('style'));
-//         if(arr.eq(i).attr('style').includes("inline")){
-//             arr.eq(i).css('display','none'); 
 
-//             i = (i == arr.length - 1) ? 0 : i+1;
-//             arr.eq(i).css('display','inline');
-//             //var atr = arr.eq(i).find('img').attr('id');
-//             //var pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
-//             //alert(pId);                
-//             break;
-//         }
-//     } 
-// });
+//change icon image on click
+$('.iconlist ').on('click', function() {
+    //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
+    var arr = $('.iconlist > *');
+       
+    for (var i = 0; i < arr.length; i++) {
+        //alert('Display of #' + i + ': ' + arr.eq(i).attr('style'));
+        if(arr.eq(i).attr('style').includes("inline")){
+            arr.eq(i).css('display','none'); 
+
+            i = (i == arr.length - 1) ? 0 : i+1;
+            arr.eq(i).css('display','inline');
+            //var atr = arr.eq(i).find('img').attr('id');
+            //var pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
+            //alert(pId);                
+            break;
+        }
+    }
+    
+});
+
 // const showEditIcon = (srcStr) => {
 //     var arr = $('.form-group .iconlist > *');
+   
 //     for (var i = 0; i < arr.length; i++) {
 //         var atr = arr.eq(i).find('img').attr('src');
 //         if(arr.eq(i).attr('style').includes("inline") && srcStr != atr)
@@ -444,6 +450,7 @@ $('input[type= text]').on('click', function(event){
 //         if(srcStr == atr) arr.eq(i).css('display','inline');
 //     }
 // };
+
 const getDisplayedIconId = ()=>{
     var arr = $('.form-group .iconlist > *');
     var pId = 1;
@@ -456,6 +463,7 @@ const getDisplayedIconId = ()=>{
     }
     return pId;
 };
+
 const getIconSrcById = (iconId)=>{
     var src = "/images/Notice.png";
     var arr = $('.form-group .iconlist > *');
@@ -469,6 +477,7 @@ const getIconSrcById = (iconId)=>{
     }
     return src;
 };
+
 $('select.noticetypeselect').on('change', function() {
     var selectedValue = $(this).children("option:selected").val();
     var now = new Date().getTime();
@@ -479,10 +488,12 @@ $('select.noticetypeselect').on('change', function() {
         }); 
     }         
     else if(selectedValue == 2){ 
+        
         $('.notice-item').each((index, value) => {
             //alert( $(value).find('.noticestart p').text().replace("Start:", "").trim() + ' | ' + $(value).find('.noticeend p').text().replace("End:", "").trim());
             var noticeStart = Date.parse($(value).find('.noticestart p').text().replace("Start:", "").trim());
             var noticeEnd = Date.parse($(value).find('.noticeend p').text().replace("End:", "").trim());
+            
             if ( noticeStart < now && noticeEnd > now) {
                 //alert("Active! " + "Start: " + noticeStart + " End: " + noticeEnd + " now: " + now);
                 $(value).attr('style','display: block');
@@ -515,9 +526,10 @@ $('select.noticetypeselect').on('change', function() {
                 }   
             });
         }
-});
+ });
+
 $(document).ready(function() {
-    $('input[name="title"]').on("propertychange change keyup paste input", function () {
+    $('input[name="text"]').on("propertychange change keyup paste input", function () {
         if ($(this).val() == '') {
             //Check to see if there is any text entered
             // If there is no text within the input then disable the button
@@ -526,6 +538,7 @@ $(document).ready(function() {
         } else {
             let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
+            
             if(noticeEnd != "" &&  noticeStart != ""){
                 $("#data_submit").attr("disabled", false);
                 // $('#data_preview').prop('disabled', false); DOES NOT EXIST YET
@@ -539,10 +552,10 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeTitle = $('input[name="title"]').val().trim();
+            let noticeText = $('input[name="text"]').val().trim();
             //let noticeStart = $('input[name="start"]').val().trim();
             let noticeEnd = $('input[name="end"]').val().trim();
-            if(noticeEnd != "" &&  noticeTitle != "")
+            if(noticeEnd != "" &&  noticeText != "")
             {
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
@@ -556,11 +569,12 @@ $(document).ready(function() {
             $('#data_submit').prop('disabled', true);
             $('#data_preview').prop('disabled', true);
         } else {
-            let noticeTitle = $('input[name="title"]').val().trim();
-            // let noticeText = $('textarea[name="text"]').val().trim();
+            let noticeText = $('input[name="text"]').val().trim();
             let noticeStart = $('input[name="start"]').val().trim();
-            //let noticeEnd = $('input[name="end"]').val().trim();  &&  noticeText != ""
-            if(noticeStart != "" &&  noticeTitle != ""){
+            //let noticeEnd = $('input[name="end"]').val().trim();
+            
+            if(noticeStart != "" &&  noticeText != "")
+            {
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
             }
@@ -599,6 +613,5 @@ $(document).ready(function() {
 //         theme: 'snow'
 //       });
 // });
-
 
 

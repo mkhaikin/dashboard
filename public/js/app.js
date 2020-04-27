@@ -202,15 +202,12 @@ $('button[type=submit]').on('click', function(event){
         //     if(arr.eq(i).attr('style').includes("inline")){
         //         psrc = arr.eq(i).find('img').attr('src');
         //         var atr = arr.eq(i).find('img').attr('id');
-        //         pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
-        //     //   alert(pId);                
+        //         pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics               
         //         break;
         //     }
         // }
         const noticeImgId = 4; //pId; db id value  
-        // alert("img id is: ". noticeImgId);
         const noticeImgSrc = "Notice.png" ;//psrc; psrc img name
-        // alert("img name is: ".noticeImgSrc);
         console.log('posting ' + noticeTitle);
         // disable pressing the enter key !!!works only once
         // $(document).keypress(
@@ -250,10 +247,10 @@ $('.notices-list').on('click', '.notice-item', function() {
     $('#delBtn').removeClass('hide');
     //Populate form
     const noticeId = $(this).closest('.notice-item').attr('id');
-    var noticeTitle = $(this).closest('.notice-item').find('.notice-content .notice-title').text().trim();
-    var noticeText = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
-    var start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().replace("Start:", "").trim();
-    var end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().replace("End:", "").trim();
+    const noticeTitle = $(this).closest('.notice-item').find('.notice-content .notice-title').text().trim();
+    const noticeText = $(this).closest('.notice-item').find('.notice-content .notice-text').text().trim();
+    const start = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticestart').text().replace("Start:", "").trim();
+    const end = $(this).closest('.notice-item').find('.notice-content .notice-dates .noticeend').text().replace("End:", "").trim();
      // save notice id in hidden field
     fillValues(noticeId,noticeTitle,noticeText,start,end);
         //To edit a notice, you must click on one of the notice items
@@ -267,8 +264,8 @@ $('.notices-list').on('click', '.notice-item', function() {
             const noticeId = $('input[name ="noticeId"]').val().trim();
             const noticeTitle = $('.form-group input[name="title"]').val().trim();
             const noticeText = $('.form-group textarea[name="text"]').val().trim();
-            var noticeStart = $('.form-group input[name="start"]').val().trim();
-            var noticeEnd = $('.form-group input[name="end"]').val().trim();
+            const noticeStart = $('.form-group input[name="start"]').val().trim();
+            const noticeEnd = $('.form-group input[name="end"]').val().trim();
             // alert('Before: ' + noticeStart + '|' + noticeEnd + '|' + noticeId);
             noticeStart = checkMinFormat(noticeStart); //formate time: minutes may be not in mm format
             noticeEnd = checkMinFormat(noticeEnd);
@@ -358,10 +355,8 @@ $('.notices-list').on('click', '.notice-item', function() {
 
 //datapicker
 $('input[type= text]').on('click', function(event){
-   
     const name = $(this).attr('name');
     const id = $(this).attr('id');
-    
     if(name == "start" || name == "end"){
         //$('#date_pickerStart').datetimepicker({
         $(this).datetimepicker({
@@ -421,25 +416,24 @@ $('input[type= text]').on('click', function(event){
     }
 });
 //change icon image on click
-$('.iconlist ').on('click', function() {
-    //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
-    var arr = $('.iconlist > *');
+// $('.iconlist ').on('click', function() {
+//     //var arr = $(this).closest('.addform-group .form-group .iconlist').siblings('.pic');
+//     var arr = $('.iconlist > *');
        
-    for (var i = 0; i < arr.length; i++) {
-        //alert('Display of #' + i + ': ' + arr.eq(i).attr('style'));
-        if(arr.eq(i).attr('style').includes("inline")){
-            arr.eq(i).css('display','none'); 
+//     for (var i = 0; i < arr.length; i++) {
+//         //alert('Display of #' + i + ': ' + arr.eq(i).attr('style'));
+//         if(arr.eq(i).attr('style').includes("inline")){
+//             arr.eq(i).css('display','none'); 
 
-            i = (i == arr.length - 1) ? 0 : i+1;
-            arr.eq(i).css('display','inline');
-            //var atr = arr.eq(i).find('img').attr('id');
-            //var pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
-            //alert(pId);                
-            break;
-        }
-    }
-    
-});
+//             i = (i == arr.length - 1) ? 0 : i+1;
+//             arr.eq(i).css('display','inline');
+//             //var atr = arr.eq(i).find('img').attr('id');
+//             //var pId = atr.replace(/[^0-9\.]+/g, ""); //regex would replace everything except numerics
+//             //alert(pId);                
+//             break;
+//         }
+//     } 
+// });
 // const showEditIcon = (srcStr) => {
 //     var arr = $('.form-group .iconlist > *');
 //     for (var i = 0; i < arr.length; i++) {
@@ -521,8 +515,7 @@ $('select.noticetypeselect').on('change', function() {
                 }   
             });
         }
- });
-
+});
 $(document).ready(function() {
     $('input[name="title"]').on("propertychange change keyup paste input", function () {
         if ($(this).val() == '') {
@@ -564,10 +557,10 @@ $(document).ready(function() {
             $('#data_preview').prop('disabled', true);
         } else {
             let noticeTitle = $('input[name="title"]').val().trim();
-            let noticeText = $('textarea[name="text"]').val().trim();
+            // let noticeText = $('textarea[name="text"]').val().trim();
             let noticeStart = $('input[name="start"]').val().trim();
-            //let noticeEnd = $('input[name="end"]').val().trim();
-            if(noticeStart != "" &&  noticeTitle != "" &&  noticeText != ""){
+            //let noticeEnd = $('input[name="end"]').val().trim();  &&  noticeText != ""
+            if(noticeStart != "" &&  noticeTitle != ""){
                 $("#data_submit").attr("disabled", false);
                 $('#data_preview').prop('disabled', false);
             }
@@ -575,37 +568,37 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-    //$('#editor').val('Text');
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
+// $(document).ready(function() {
+//     //$('#editor').val('Text');
+//     var toolbarOptions = [
+//         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+//         ['blockquote', 'code-block'],
       
-        [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }],               // custom button values
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
+//         [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }],               // custom button values
+//         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+//         [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+//         [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+//         [{ 'direction': 'rtl' }],                         // text direction
       
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        ['image'],
-        ['link'],
+//         [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+//         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+//         ['image'],
+//         ['link'],
       
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
+//         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+//         [{ 'font': [] }],
+//         [{ 'align': [] }],
       
-        ['clean']                                         // remove formatting button
-      ];
+//         ['clean']                                         // remove formatting button
+//       ];
       
-      var quill = new Quill('#editor', {
-        modules: {
-          toolbar: toolbarOptions
-        },
-        theme: 'snow'
-      });
-});
+//       var quill = new Quill('#editor', {
+//         modules: {
+//           toolbar: toolbarOptions
+//         },
+//         theme: 'snow'
+//       });
+// });
 
 
 

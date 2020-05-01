@@ -16,6 +16,7 @@ function Transaction() {
                        ' WHERE c.code = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, code);                       
     };
+    
     this.getAllNoticesByUserName  = async function(userName){
         var query = '(SELECT c.name, n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -24,6 +25,7 @@ function Transaction() {
                        ' WHERE c.name = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, userName);                       
     };
+
     this.getNoticeByID  = async function(id){
         var query = '(SELECT n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -37,6 +39,7 @@ function Transaction() {
         var query = '(SELECT p.id as picid, p.name as picture FROM pictures as p);';
         return await pool.query(query);                       
     };
+
     this.getNoticesInFull  = async function(userName){// get all current notice with active status
         var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
         ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -45,6 +48,7 @@ function Transaction() {
         'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
         return await pool.query(query, userName);                       
     };
+
     this.insertNotice = async function(userName, title, text, start, end, imgId){
         const db = await pool.getConnection();
         let res = 0;
@@ -62,6 +66,7 @@ function Transaction() {
             }
         return res;
     };
+
     this.insertNotices = async function(records){
         const db = await pool.getConnection();
         var res = 0; 
@@ -90,6 +95,7 @@ function Transaction() {
             }
         return res;
     };
+
     async function withTransaction( db, callback ) {
         try {
           await db.beginTransaction();
@@ -126,6 +132,7 @@ function Transaction() {
             }
         return res;
     }; 
+
     this.deleteNoticeByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
@@ -141,6 +148,7 @@ function Transaction() {
             }
         return res;
     }; 
+    
     this.deleteNoticesByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
@@ -156,6 +164,7 @@ function Transaction() {
             }
         return res;
     }; 
+
     this.authorization = function(userName, password, res, callback){
         conn.init();
         conn.acquire(function (err, con) { 
@@ -172,6 +181,7 @@ function Transaction() {
             });
         }); 
     };
+
     this.getNoticesByIDs  = function (ids, res, callback) {
         var data;
         // initialize database connection  

@@ -5,7 +5,7 @@ const pool = require('../conn/Pool');
 function Transaction() { 
     this.getAccount = async function(userName, password){
         var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
-        return await pool.query(query, [username, password]);
+        return await pool.query(query, [userName, password]);   
     };
     // get all notices
     this.getAllNoticesByUser  = async function(code){
@@ -46,7 +46,7 @@ function Transaction() {
         ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
         ' JOIN pictures as p ON n.icon = p.id '  +
         'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
-        return await pool.query(query, condoname);                       
+        return await pool.query(query, userName);                       
     };
 
     this.insertNotice = async function(userName, title, text, start, end, imgId){
@@ -54,15 +54,15 @@ function Transaction() {
         let res = 0;
             try {
                 await withTransaction( db, async () => {
-                    var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
-                                ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
-                    var params = [condo, text, start, end, imgId];
+                    var query ='INSERT INTO new_noticetable (condo, title, text, start, end, icon, created)' + 
+                                ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?,?, NOW());';
+                    var params = [userName, title, text, start, end, imgId];
                     var insRes = await pool.query(query, params); 
                     //console.log( insRes.insertId);
                     res = insRes.insertId;
                 } );
             } catch ( err ) {
-              console.log(err);
+              console.log(err); 
             }
         return res;
     };
@@ -114,15 +114,16 @@ function Transaction() {
         let res = 0;
             try {
                 await withTransaction( db, async () => {
-                var query = 'UPDATE new_noticetable '  +
-                'SET text= ?, ' +
-                'start= ?, ' +
-                'end= ?, ' +
-                'icon= ?, ' +
-                'modified= NOW() ' +
-                'WHERE id= ?;';
-                var params = [text, start, end, icon, id];
-                var updateRes = await pool.query(query, params); 
+                    var query = 'UPDATE new_noticetable '  +
+                    'SET title= ?, ' +
+                    '   text= ?, ' +
+                    'start= ?, ' +
+                    'end= ?, ' +
+                    'icon= ?, ' +
+                    'modified= NOW() ' +
+                    'WHERE id= ?;';
+                    var params = [title, text, start, end, imgId, noticeId];
+                    var updateRes = await pool.query(query, params); 
                     //console.log(  updateRes.affectedRows);
                     res = updateRes.affectedRows;
                 });
@@ -164,7 +165,7 @@ function Transaction() {
         return res;
     }; 
 
-    this.authorization = function(username, password, res, callback){
+    this.authorization = function(userName, password, res, callback){
         conn.init();
         conn.acquire(function (err, con) { 
             var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
@@ -206,87 +207,7 @@ function Transaction() {
                     con.release();
                 });  
         });  
-    }; 
-
-    //insert new notice
-    this.insertNewNotice = function(condo, text, start, end, imgId, res, callback){ 
-        // initialize database connection  
-        connection.init();  
-        // get condo code as parameter to passing into query and return filter data  
-        connection.acquire((err, con) => {  
-           var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
-                        ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
-            var params = [condo, text, start, end, imgId];
-            con.query(query, params, (err, result) => {  
-                if (typeof callback === 'function') {
-                    if(err) {
-                        console.log('Error1 in Insert!');
-                        callback(err, null);
-                    }
-                    var queryLastId = 'SELECT MAX(id) as id FROM new_noticetable ' + 
-                    'WHERE condo IN (SELECT code FROM condos WHERE name = ?);';
-                    con.query(queryLastId, condo, function (err, result) {  
-                        console.log("ID of inserted row: " + result);             
-                        if(err){
-                            console.log('Error2 in Insert!');
-                            callback(err, null);
-                        }
-                        else
-                            callback(null, result);
-                    });  
-                }  
-                con.release();  
-            });  
-        }); 
-    };  
-
-    //update notice
-    this.updateNoticeOLDVERSION = function( id, text, start, end, icon, res, callback){
-        // initialize database connection  
-        connection.init();  
-        // get condo code and id as parameter to passing into query and return filter data  
-        connection.acquire(function (err, con) {  
-            var query = 'UPDATE new_noticetable '  +
-                'SET text= ?, ' +
-                'start= ?, ' +
-                'end= ?, ' +
-                'icon= ?, ' +
-                'modified= NOW() ' +
-                'WHERE id= ?;';
-            var params = [text, start, end, icon, id];    
-            con.query(query, params, function (err, result) { 
-                if (typeof callback === 'function') {                    
-                    if(err){
-                        console.log('Error in Update!');
-                        callback(err, null);
-                    }
-                    else
-                        callback(null, result);
-                }
-                con.release();                   
-            });
-        });
-    }; 
-
-    this.deleteNoticeOLD = function( id, callback){
-        // initialize database connection  
-        connection.init();  
-        // get condo code and id as parameter to passing into query and return filter data  
-        connection.acquire(function (err, con) {  
-            var query = 'DELETE FROM new_noticetable WHERE id = ?;';
-            con.query(query, id, (err, result) => {
-                if (typeof callback === 'function') {
-                    if(err){ 
-                        console.log("Error: " + err.message);
-                        callback(err, null);
-                    }
-                    else
-                        callback(null, result);
-                  } 
-                con.release();  
-                //res.send(result);  
-            });
-        });
+        //return data;
     }; 
 }
 

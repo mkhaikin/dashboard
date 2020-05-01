@@ -3,47 +3,41 @@
 const pool = require('../conn/Pool'); 
 
 function Transaction() { 
-
-    this.getAccount = async function(username, password){
+    this.getAccount = async function(userName, password){
         var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
         return await pool.query(query, [username, password]);
     };
-
     // get all notices
-    this.getAllNoticesByCondo  = async function(code){
-        var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+    this.getAllNoticesByUser  = async function(code){
+        var query = '(SELECT c.name, n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
                        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
                        ' JOIN pictures as p ON n.icon = p.id '  +
                        ' WHERE c.code = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, code);                       
     };
-
-    this.getAllNoticesByCondoName  = async function(name){
-        var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+    this.getAllNoticesByUserName  = async function(userName){
+        var query = '(SELECT c.name, n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
                        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
                        ' JOIN pictures as p ON n.icon = p.id '  +
                        ' WHERE c.name = ? ORDER BY n.id DESC ); ';
-        return await pool.query(query, name);                       
+        return await pool.query(query, userName);                       
     };
-
     this.getNoticeByID  = async function(id){
-        var query = '(SELECT n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
+        var query = '(SELECT n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
                        ' FROM new_noticetable as n ' +
                        ' JOIN pictures as p ON n.icon = p.id '  +
                        ' WHERE n.id = ?); ';
         return await pool.query(query, id);                       
     };
-
     // get all notice icons
     this.getAllNoticesIcons  = async function(){
         var query = '(SELECT p.id as picid, p.name as picture FROM pictures as p);';
         return await pool.query(query);                       
     };
-
-    this.getNoticesInFull  = async function(condoname){// get all current notice with active status
+    this.getNoticesInFull  = async function(userName){// get all current notice with active status
         var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
         ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
         ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
@@ -51,9 +45,7 @@ function Transaction() {
         'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
         return await pool.query(query, condoname);                       
     };
-
-
-    this.insertNotice = async function(condo, text, start, end, imgId){
+    this.insertNotice = async function(userName, title, text, start, end, imgId){
         const db = await pool.getConnection();
         let res = 0;
             try {
@@ -70,7 +62,6 @@ function Transaction() {
             }
         return res;
     };
-
     this.insertNotices = async function(records){
         const db = await pool.getConnection();
         var res = 0; 
@@ -99,7 +90,6 @@ function Transaction() {
             }
         return res;
     };
-
     async function withTransaction( db, callback ) {
         try {
           await db.beginTransaction();
@@ -112,9 +102,8 @@ function Transaction() {
           await db.release();
         }
     };
-
-      //update notice
-    this.updateNotice = async function( id, text, start, end, icon){
+    //update notice
+    this.updateNotice = async function( noticeId, title, text, start, end, imgId){
         const db = await pool.getConnection();
         let res = 0;
             try {
@@ -130,13 +119,12 @@ function Transaction() {
                 var updateRes = await pool.query(query, params); 
                     //console.log(  updateRes.affectedRows);
                     res = updateRes.affectedRows;
-                } );
+                });
             } catch ( err ) {
               console.log(err);               
             }
         return res;
     }; 
-
     this.deleteNoticeByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
@@ -152,13 +140,12 @@ function Transaction() {
             }
         return res;
     }; 
-
-    this.deleteNoticesByID = async function( ids){
+    this.deleteNoticesByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
             try {
                 await withTransaction( db, async () => {                    
-                var query = 'DELETE FROM new_noticetable WHERE IN (' + ids.join() + ')';               
+                var query = 'DELETE FROM new_noticetable WHERE IN (' + id.join() + ')';               
                 var updateRes = await pool.query(query, id); 
                     //console.log(  updateRes.affectedRows);
                     res = updateRes.affectedRows;
@@ -174,7 +161,7 @@ function Transaction() {
         conn.acquire(function (err, con) { 
             var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
              //if (err) throw err; // not connected!
-             con.query(query, [username, password], function (err, result) {  
+             con.query(query, [userName, password], function (err, result) {  
                 if (typeof callback === 'function') {
                     if(err) 
                         callback(err, null);
@@ -345,7 +332,6 @@ function Transaction() {
             });
         });
     }; 
- 
 }
 
 module.exports = new Transaction(); 

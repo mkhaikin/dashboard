@@ -36,7 +36,6 @@ app.get('/favicon.ico', (req,res,next) => {
 // 	response.sendFile(path.join(__dirname + '/public/index.html'));
 // });
 
-
 // Active on port #
 app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
 

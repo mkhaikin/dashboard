@@ -51,12 +51,12 @@ class Account {
     return this._condo_code;
   }
 
-  async validateAccount(username, password){
+  async validateAccount(userName, password){
     //return RES.setResult(1, null);
     try{
         //var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
         //const results = await pool.query(query, [username, password]);
-        const results = await transactions.getAccount(username, password);
+        const results = await transactions.getAccount(userName, password);
         console.log(results);
         
         if(JSON.stringify(results).length > 2) { // '[]' means empty result, length == 2

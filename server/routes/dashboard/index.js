@@ -5,14 +5,12 @@ const DAL = require('../../model/DataAccessLogic');
 
 module.exports = () => {
     router.get('/', async (req, res, next) => {
-    
 	if (req.session.loggedIn) {
         const userName = req.session.userName;
         console.log(userName+' in dashboard');
         var result = '';
             try{
-                result = await DAL.getallNoticesByCondoName(userName);
-    
+                result = await DAL.getallNoticesByUserName(userName);
                 if(result.data != 0) {
                     console.log(':)\n------- Populating Results - Notices!-------'); 
                     console.log(result.data);
@@ -35,11 +33,10 @@ module.exports = () => {
     });
 
     router.post('/add', async (req, res, next) => {
-
         const userName = req.session.userName
         if (!userName) return res.redirect('/login');  
-
         // const userName = req.body.userName;
+        const noticeTitle = req.body.title;
         const noticeText = req.body.text;
         const noticeStart = req.body.start;
         const noticeEnd = req.body.end;
@@ -49,31 +46,28 @@ module.exports = () => {
         // const noticeImgSrc = req.body.imgSrc;
         console.log('----- Inserting notice into DB -----');
         console.log("User = " + userName);
+        console.log("noticeTitle = " + noticeTitle);
         console.log("noticeText = " + noticeText);
         console.log("noticeStart = " + noticeStart);
         console.log("noticeEnd = " + noticeEnd);
         console.log("noticeImgId = " + noticeImgId);
         // console.log(" noticeImgSrc = "+ noticeImgSrc);
         console.log('------------ Adding Notice -------------');
-
-        if (!(userName && noticeText && noticeStart && noticeEnd && noticeImgId)) { //something was missed
+        if (!(userName && noticeTitle && noticeText && noticeStart && noticeEnd && noticeImgId)) { //something was missed
             return res.status(501).json({
                 message: 'Not able to add notice with missed data'
             });
         }
-        
         var result = '';
-        
         try{
-            result = await DAL.insertNotice(userName, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
-
+            result = await DAL.insertNotice(userName, noticeTitle, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
             if(result.data > 0) {
                 console.log('Result is not empty. Insert done! id:' + result.data + '\n----------------------------------------'); 
-                //result.data store a new index of the notice
-                                
+                //result.data store a new index of the notice              
                 return res.json(
                     {
                     userName: userName,
+                    title:noticeTitle,
                     text: noticeText,
                     start: noticeStart,
                     end: noticeEnd,
@@ -91,28 +85,28 @@ module.exports = () => {
                 message: 'Could not add new notice'
             });
         }
-
         // res.end();
     });
 
     router.post('/edit', async (req, res, next) => {
         if (req.session.loggedIn) {
             const noticeId = req.body.noticeId;
+            const noticeTitle = req.body.title;
             const noticeText = req.body.text;
             const noticeStart = req.body.start; 
             const noticeEnd = req.body.end;
             const noticeStartFull = req.body.start + ":00"; //for full time format in db
             const noticeEndFull = req.body.end + ":00";
             const noticeImgId = req.body.imgId;
-            if (noticeId && noticeText && noticeStart && noticeEnd && noticeImgId) {
+            if (noticeId && noticeTitle && noticeText && noticeStart && noticeEnd && noticeImgId) {
                 console.log('------------ Editing Notice ----------\nuser '+ req.session.userName +' is updating notice id:'+ noticeId);
                 try{
-                    var result = await DAL.updateNotice(noticeId, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
-        
+                    var result = await DAL.updateNotice(noticeId, noticeTitle, noticeText, noticeStartFull, noticeEndFull, noticeImgId);
                     if(result.data > 0) {
                         console.log('Result is not empty. Update done! ' + result.data +'\n----------------------------------------'); 
                         return res.json(
                             {
+                                title: noticeTitle,
                                 text: noticeText,
                                 start: noticeStart,
                                 end: noticeEnd,
@@ -121,7 +115,7 @@ module.exports = () => {
                         });
                         //res.send(result);
                     } else {  
-                            console.log(result.message); 
+                        console.log(result.message); 
                     }
                 }catch(e){
                     console.log(e + 'Not able to query the database');
@@ -130,7 +124,6 @@ module.exports = () => {
             else{ // condo code == null
                 console.log('Input data are missed!');
             }
-            
         } else {
             return res.redirect('/login');  
         }
@@ -145,7 +138,6 @@ module.exports = () => {
             console.log('Id: ' + noticeId);       
             try{
                 var result = await DAL.deleteNoticeById(noticeId);
-    
                 if(result.data > 0) {
                     console.log('Result is not empty. Deleted ' + result.data + ' row! '+ noticeId+'\n----------------------------------------'); 
                     return res.json(
@@ -158,12 +150,10 @@ module.exports = () => {
             }catch(e){
                 console.log(e + 'Not able to query the database');
             }
-
         } else {
             return res.redirect('/login');  
         }
         res.end();
     });
-
 return router;
 };

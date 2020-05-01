@@ -7,10 +7,10 @@ class NoticeService {
 
     // one notice operation
     //INSERT 
-    async insertNewNotice( condo, text, start, end, imgId){
+    async insertNewNotice( userName, title, text, start, end, imgId){
        
         try{
-            const result = await transactions.insertNotice(condo, text, start, end, imgId);
+            const result = await transactions.insertNotice(userName, title, text, start, end, imgId);
             //console.log(result);
             
             if(result > 0) { // '[]' means empty result, length == 2
@@ -27,9 +27,9 @@ class NoticeService {
 
     }
     //UPDATE
-    async updateNoticeById(idNote, text, start, end, imgId){
+    async updateNoticeById(noticeId, title, text, start, end, imgId){
         try{
-            const result = await transactions.updateNotice(idNote, text, start, end, imgId);
+            const result = await transactions.updateNotice(noticeId, title, text, start, end, imgId);
             if(result > 0) {
             //console.log('Success');
                 return { data: result, message: "Updated" };
@@ -65,7 +65,7 @@ class NoticeService {
     //GET 
     async getNoticesByCondoCode(CondoCode){
         try{
-            const results = await transactions.getAllNoticesByCondo(CondoCode);
+            const results = await transactions.getAllNoticesByUser(CondoCode);
             console.log(results);
             if(JSON.stringify(results).length > 2) { // '[]' means empty result, length == 2
                 //console.log('Success');
@@ -80,9 +80,9 @@ class NoticeService {
         }
     }
 
-    async getNoticesByCondoName(CondoName){
+    async getNoticesByUserName(UserName){
         try{
-            const results = await transactions.getAllNoticesByCondoName(CondoName);
+            const results = await transactions.getAllNoticesByUserName(UserName);
             //console.log(results);
             if(JSON.stringify(results).length > 2) { // '[]' means empty result, length == 2
                 //console.log('Success');
@@ -114,29 +114,29 @@ class NoticeService {
         }
     }
 
-    getNoticesByStartDate(CondoName){
+    getNoticesByStartDate(userName){
         
     }
 
-    getNoticesByEndDate(CondoName){
+    getNoticesByEndDate(userName){
         
     }
 
-    getCurrentNotices(CondoName){
+    getCurrentNotices(userName){
         
     }
 
-    getFutureNotice(CondoName){
+    getFutureNotice(userName){
 
     }
 
-    getNoticesByActiveStatus(CondoName){
+    getNoticesByActiveStatus(userName){
         
     }
 
-    async getNoticesInFull(CondoName){ //active status and current time
+    async getNoticesInFull(userName){ //active status and current time
         try{
-            const result = await transactions.getNoticesInFull(CondoName);
+            const result = await transactions.getNoticesInFull(userName);
             //console.log(result);
             if(JSON.stringify(result).length > 2) { // '[]' means empty result, length == 2
                 //console.log('Success');

@@ -7,7 +7,6 @@ function Transaction() {
     this.getAccount = async function(username, password){
         var query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
         return await pool.query(query, [username, password]);
-         
     };
 
     // get all notices
@@ -50,7 +49,6 @@ function Transaction() {
         ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
         ' JOIN pictures as p ON n.icon = p.id '  +
         'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
-
         return await pool.query(query, condoname);                       
     };
 
@@ -60,7 +58,6 @@ function Transaction() {
         let res = 0;
             try {
                 await withTransaction( db, async () => {
-                    
                     var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
                                 ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
                     var params = [condo, text, start, end, imgId];
@@ -70,10 +67,8 @@ function Transaction() {
                 } );
             } catch ( err ) {
               console.log(err);
-               
             }
         return res;
-
     };
 
     this.insertNotices = async function(records){
@@ -89,27 +84,20 @@ function Transaction() {
                         //console.log(row.code);
                         code = row.code;
                       });
-
                     records.forEach( function  (value) {
                         value[0] = code;
                         //console.log(value);
                     });  
-                    
                     var query ='INSERT INTO new_noticetable (condo, text, start, end, icon)' + 
                                 ' Values  ?;';
-                    
                     var insRes = await pool.query(query, [records]); 
                     //console.log( insRes.affectedRows);
                     res = insRes.affectedRows;
-                   
-                   
                 } );
             } catch ( err ) {
-              console.log(err);
-               
+              console.log(err); 
             }
         return res;
-
     };
 
     async function withTransaction( db, callback ) {
@@ -131,7 +119,6 @@ function Transaction() {
         let res = 0;
             try {
                 await withTransaction( db, async () => {
-                    
                 var query = 'UPDATE new_noticetable '  +
                 'SET text= ?, ' +
                 'start= ?, ' +
@@ -182,9 +169,6 @@ function Transaction() {
         return res;
     }; 
 
-    
-
-////////////////////////////
     this.authorization = function(username, password, res, callback){
         conn.init();
         conn.acquire(function (err, con) { 
@@ -206,17 +190,14 @@ function Transaction() {
     this.getAllNoticesByCondoCode  = function (code, res, callback) {
         var data;
         conn.init();  
-        
         // get condo code as parameter to passing into query and return filter data  
         conn.acquire(function (err, con) {  
-
             var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, null as picid, p.name as icon ' +
                        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
                        ' JOIN pictures as p ON n.icon = p.id '  +
                        ' WHERE c.code = ? ORDER BY n.id DESC ) '  +
                        ' UNION (SELECT null , null , null , null, null , p.id as picid, p.name as picture FROM pictures as p);'; 
-
             //if (err) throw err; // not connected!
             con.query(query, code, function (err, result) {  
                 if (typeof callback === 'function') {
@@ -234,7 +215,6 @@ function Transaction() {
         var data;
         // initialize database connection  
         connection.init();  
-        
         // get condo code as parameter to passing into query and return filter data  
         connection.acquire(function (err, con) {  
             var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', HOUR(n.start), \':\', MINUTE(n.start)) as start,' + 
@@ -242,9 +222,7 @@ function Transaction() {
                         ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo ' +
                         'JOIN pictures as p ON n.icon = p.id ' +
                         'WHERE n.id = ?;'; 
-
             //if (err) throw err; // not connected!
-
             con.query(query, id, function (err, result) {  
                     //con.release();  
                     //res.send(result);  //commented by Yefim
@@ -255,20 +233,15 @@ function Transaction() {
                         else
                             callback(null, result);
                       }  
-                      
                     con.release();
                 });  
-
         });  
-        //return data;
     };  
 
-    ////////////
     this.getNoticesByIDs  = function (ids, res, callback) {
         var data;
         // initialize database connection  
         connection.init();  
-        
         // get condo code as parameter to passing into query and return filter data  
         connection.acquire(function (err, con) {  
             var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', HOUR(n.start), \':\', MINUTE(n.start)) as start,' + 
@@ -276,10 +249,7 @@ function Transaction() {
                         ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo ' +
                         'JOIN pictures as p ON n.icon = p.id ' +
                         'WHERE n.id IN (' + ids.join() + ')'; 
-                                                
-
             //if (err) throw err; // not connected!
-
             con.query(query, function (err, result) {  
                     //con.release();  
                     //res.send(result);  //commented by Yefim
@@ -292,39 +262,28 @@ function Transaction() {
                       }
                     con.release();
                 });  
-
         });  
-        //return data;
     }; 
 
-    ////////////////
-
     //insert new notice
-    this.insertNewNotice = function(condo, text, start, end, imgId, res, callback){
-       
+    this.insertNewNotice = function(condo, text, start, end, imgId, res, callback){ 
         // initialize database connection  
         connection.init();  
         // get condo code as parameter to passing into query and return filter data  
         connection.acquire((err, con) => {  
-
            var query ='INSERT INTO new_noticetable (condo, text, start, end, icon, created)' + 
                         ' Values((SELECT code FROM condos WHERE name = ?), ?,?,?,?, NOW());';
             var params = [condo, text, start, end, imgId];
-                  
             con.query(query, params, (err, result) => {  
-
                 if (typeof callback === 'function') {
                     if(err) {
                         console.log('Error1 in Insert!');
                         callback(err, null);
                     }
-
                     var queryLastId = 'SELECT MAX(id) as id FROM new_noticetable ' + 
                     'WHERE condo IN (SELECT code FROM condos WHERE name = ?);';
                     con.query(queryLastId, condo, function (err, result) {  
-
-                        console.log("ID of inserted row: " + result);
-                       
+                        console.log("ID of inserted row: " + result);             
                         if(err){
                             console.log('Error2 in Insert!');
                             callback(err, null);
@@ -334,7 +293,6 @@ function Transaction() {
                     });  
                 }  
                 con.release();  
-
             });  
         }); 
     };  
@@ -352,7 +310,6 @@ function Transaction() {
                 'icon= ?, ' +
                 'modified= NOW() ' +
                 'WHERE id= ?;';
-                                                    //console.log(start + '|' + end + '|' + id);    
             var params = [text, start, end, icon, id];    
             con.query(query, params, function (err, result) { 
                 if (typeof callback === 'function') {                    

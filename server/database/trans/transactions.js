@@ -16,6 +16,7 @@ function Transaction() {
                        ' WHERE c.code = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, code);                       
     };
+    
     this.getAllNoticesByUserName  = async function(userName){
         var query = '(SELECT c.name, n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -24,6 +25,7 @@ function Transaction() {
                        ' WHERE c.name = ? ORDER BY n.id DESC ); ';
         return await pool.query(query, userName);                       
     };
+
     this.getNoticeByID  = async function(id){
         var query = '(SELECT n.id, n.title, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
                        ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -37,6 +39,7 @@ function Transaction() {
         var query = '(SELECT p.id as picid, p.name as picture FROM pictures as p);';
         return await pool.query(query);                       
     };
+
     this.getNoticesInFull  = async function(userName){// get all current notice with active status
         var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
         ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, p.name as icon ' +
@@ -45,6 +48,7 @@ function Transaction() {
         'WHERE c.name = ? AND n.start < NOW() and n.end > NOW() and n.status = 1 ORDER BY n.start DESC;';
         return await pool.query(query, condoname);                       
     };
+
     this.insertNotice = async function(userName, title, text, start, end, imgId){
         const db = await pool.getConnection();
         let res = 0;
@@ -62,6 +66,7 @@ function Transaction() {
             }
         return res;
     };
+
     this.insertNotices = async function(records){
         const db = await pool.getConnection();
         var res = 0; 
@@ -90,6 +95,7 @@ function Transaction() {
             }
         return res;
     };
+
     async function withTransaction( db, callback ) {
         try {
           await db.beginTransaction();
@@ -125,6 +131,7 @@ function Transaction() {
             }
         return res;
     }; 
+
     this.deleteNoticeByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
@@ -140,6 +147,7 @@ function Transaction() {
             }
         return res;
     }; 
+    
     this.deleteNoticesByID = async function( id){
         const db = await pool.getConnection();
         let res = 0;
@@ -172,58 +180,6 @@ function Transaction() {
             });
         }); 
     };
-
-    // get all notices data  
-    this.getAllNoticesByCondoCode  = function (code, res, callback) {
-        var data;
-        conn.init();  
-        // get condo code as parameter to passing into query and return filter data  
-        conn.acquire(function (err, con) {  
-            var query = '(SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', DATE_FORMAT(n.start, \'%H:%i\')) as start,' + 
-                       ' CONCAT(DATE(n.end ), \' \', DATE_FORMAT(n.end, \'%H:%i\')) as end, null as picid, p.name as icon ' +
-                       ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo  ' +
-                       ' JOIN pictures as p ON n.icon = p.id '  +
-                       ' WHERE c.code = ? ORDER BY n.id DESC ) '  +
-                       ' UNION (SELECT null , null , null , null, null , p.id as picid, p.name as picture FROM pictures as p);'; 
-            //if (err) throw err; // not connected!
-            con.query(query, code, function (err, result) {  
-                if (typeof callback === 'function') {
-                    if(err) 
-                        callback(err, null);
-                    else
-                        callback(null, result);
-                }                      
-                con.release();
-            });  
-        });  
-    }; 
-    
-    this.getNoticeByIDOLD  = function (id, res, callback) {
-        var data;
-        // initialize database connection  
-        connection.init();  
-        // get condo code as parameter to passing into query and return filter data  
-        connection.acquire(function (err, con) {  
-            var query = 'SELECT c.name, n.id, n.text, CONCAT(DATE(n.start), \' \', HOUR(n.start), \':\', MINUTE(n.start)) as start,' + 
-                        ' CONCAT(DATE(n.end ), \' \', HOUR(n.end ), \':\', MINUTE(n.end )) as end, p.name as icon' +
-                        ' FROM condos as c JOIN new_noticetable as n ON c.code = n.condo ' +
-                        'JOIN pictures as p ON n.icon = p.id ' +
-                        'WHERE n.id = ?;'; 
-            //if (err) throw err; // not connected!
-            con.query(query, id, function (err, result) {  
-                    //con.release();  
-                    //res.send(result);  //commented by Yefim
-                    //data = result;
-                    //console.log(result);
-                    if (typeof callback === 'function') {
-                        if(err) callback(err, null);
-                        else
-                            callback(null, result);
-                      }  
-                    con.release();
-                });  
-        });  
-    };  
 
     this.getNoticesByIDs  = function (ids, res, callback) {
         var data;

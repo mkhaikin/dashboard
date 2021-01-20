@@ -22,6 +22,10 @@ const closeFullscreen = () => {
     document.msExitFullscreen();
   }
 }
+// tinymce.init({
+//   selector: '#textarea',
+//   toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent'
+// });
 const noticeTemplate = (id, title, text, start, end, srcImg) => {
     //Create new .notice-item div
     // alert('constructing new noticeItem');
